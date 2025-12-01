@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getMedicineList } from "../../api/medicineApi";
+import { useNavigate } from "react-router-dom";
 
 export default function MedicineList() {
   const [list, setList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMedicineList().then((res) => {
@@ -10,7 +12,7 @@ export default function MedicineList() {
 
       let data = res.data;
 
-      // 서버 응답이 배열인지? 아니면 객체 안에 배열이 있는지 확인
+      // 응답 형태 확인
       if (Array.isArray(data)) {
         setList(data);
       } else if (data.data && Array.isArray(data.data)) {
@@ -18,8 +20,8 @@ export default function MedicineList() {
       } else if (data.list && Array.isArray(data.list)) {
         setList(data.list);
       } else {
-        console.error("❌ 서버 응답이 배열 형식이 아님:", data);
-        setList([]); // 오류 방지
+        console.error("❌ 서버 응답이 배열이 아님:", data);
+        setList([]);
       }
     });
   }, []);
@@ -40,6 +42,7 @@ export default function MedicineList() {
               <th>가격</th>
               <th>재고</th>
               <th>바코드</th>
+              <th>수정</th> {/* 🔥 수정 버튼 칸 */}
             </tr>
           </thead>
           <tbody>
@@ -51,6 +54,13 @@ export default function MedicineList() {
                 <td>{m.price}</td>
                 <td>{m.stock}</td>
                 <td>{m.barcode}</td>
+                <td>
+                  <button
+                    onClick={() => navigate(`/medicines/edit/${m.medicineId}`)}
+                  >
+                    수정
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

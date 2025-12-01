@@ -16,3 +16,19 @@ export const addMedicine = async (medicine) => {
 export const getMedicineList = async () => {
   return await API.get('/api/medicines');
 };
+
+// 약품 수정
+export const updateMedicine = async (id, medicine) => {
+  return await API.put(`/api/medicines/${id}`, medicine);
+};
+
+// 약품 상세 조회
+export const getMedicineById = async (id) => {
+  return await API.get(`/api/medicines/${id}`);
+};
+
+// 약품 삭제
+export const deleteMedicine = async (id) => {
+  return await API.delete(`/api/medicines/${id}`);
+};
+
