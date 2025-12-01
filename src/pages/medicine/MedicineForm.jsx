@@ -19,6 +19,27 @@ export default function MedicineForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+<<<<<<< HEAD
+const onSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    await addMedicine({
+      ...form,
+      categoryId: form.categoryId === "" ? null : Number(form.categoryId),
+      price: Number(form.price),
+      stock: Number(form.stock),
+      status: "NORMAL"   // ⭐ 반드시 추가!
+    });
+    alert("약품 등록 성공!");
+    navigate("/medicine/list");
+  } catch (err) {
+    console.error(err);
+    alert("등록 실패");
+  }
+};
+
+=======
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,6 +57,7 @@ export default function MedicineForm() {
       alert("등록 실패");
     }
   };
+>>>>>>> b73abc13e945d4c8e5a281764237e6a04d2023dc
 
   return (
     <div style={{ padding: "30px" }}>
