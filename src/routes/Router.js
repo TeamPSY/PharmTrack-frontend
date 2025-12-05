@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 //홈 페이지 임포트
 import Home from "../pages/Home"; 
@@ -8,7 +8,7 @@ import MedicineMenu from '../pages/medicine/MedicineMenu';
 import MedicineList from '../pages/medicine/MedicineList';
 import MedicineForm from '../pages/medicine/MedicineForm';
 import MedicineEdit from "../pages/medicine/MedicineEdit";
-import MedicineDelete from '../pages/medicine/MedicineDelete'; // ⭐ 추가
+import MedicineDelete from '../pages/medicine/MedicineDelete';
 
 //판매관리 페이지들 임포트
 import SaleMenu from "../pages/sale/SaleMenu";
@@ -16,40 +16,113 @@ import SaleCreate from "../pages/sale/SaleCreate";
 import SaleList from "../pages/sale/SaleList";
 import SaleDetail from "../pages/sale/SaleDetail";
 
-
 //재고관리 페이지 임포트
 import InventoryList from "../pages/inventory/InventoryList";
 
+// 사용자 인증 페이지 임포트
+import UserRegister from "../pages/auth/UserRegister";
+import UserLogin from "../pages/auth/UserLogin";
+
+import ProtectedRoute from "../components/ProtectedRoute"; // ⭐ 추가
+
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<Home />} />
+    <Routes>
+      <Route path="/" element={<Navigate to="/home" replace />} />
 
-        {/* 🔹 판매관리 */}
-        <Route path="/sale" element={<SaleMenu />} />
-        <Route path="/sale/create" element={<SaleCreate />} />
-        <Route path="/sale/list" element={<SaleList />} />
-        <Route path="/sale/detail/:id" element={<SaleDetail />} />
+      {/* 홈은 로그인 없이도 접근 가능 */}
+      <Route path="/home" element={<Home />} />
 
-        <Route path="/medicine" element={<MedicineMenu />} />
+      {/* 🔐 판매관리 (로그인 필수) */}
+      <Route
+        path="/sale"
+        element={
+          <ProtectedRoute>
+            <SaleMenu />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sale/create"
+        element={
+          <ProtectedRoute>
+            <SaleCreate />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sale/list"
+        element={
+          <ProtectedRoute>
+            <SaleList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sale/detail/:id"
+        element={
+          <ProtectedRoute>
+            <SaleDetail />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route path="/medicine/list" element={<MedicineList />} />
+      {/* 🔐 약품관리 (로그인 필수) */}
+      <Route
+        path="/medicine"
+        element={
+          <ProtectedRoute>
+            <MedicineMenu />
+          </ProtectedRoute>
+        }
+      />
 
-        {/* ⭐ 약품 등록 페이지 */}
-        <Route path="/medicine/add" element={<MedicineForm />} />
-        
-        {/* ⭐ 약품 수정 페이지 */}
-        <Route path="/medicines/edit/:id" element={<MedicineEdit />} />
-        
-        {/* ⭐ 약품 삭제 페이지 */}
-        <Route path="/medicine/delete" element={<MedicineDelete />} />
+      <Route
+        path="/medicine/list"
+        element={
+          <ProtectedRoute>
+            <MedicineList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/medicine/add"
+        element={
+          <ProtectedRoute>
+            <MedicineForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/medicines/edit/:id"
+        element={
+          <ProtectedRoute>
+            <MedicineEdit />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/medicine/delete"
+        element={
+          <ProtectedRoute>
+            <MedicineDelete />
+          </ProtectedRoute>
+        }
+      />
 
-        {/* 재고관리 페이지 */}
-        <Route path="/inventory" element={<InventoryList />} />
+      {/* 🔐 재고관리 (로그인 필수) */}
+      <Route
+        path="/inventory"
+        element={
+          <ProtectedRoute>
+            <InventoryList />
+          </ProtectedRoute>
+        }
+      />
 
-      </Routes>
-    </BrowserRouter>
+      {/* 인증 (로그인 필요 없음) */}
+      <Route path="/register" element={<UserRegister />} />
+      <Route path="/login" element={<UserLogin />} />
+    </Routes>
   );
 }

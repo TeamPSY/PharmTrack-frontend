@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
-  const userName = "OOO"; // 로그인 기능 붙이면 여기 값을 변경하면 됨
+
+  // 로그인 정보 불러오기
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user ? user.name : null;
 
   return (
     <div
@@ -26,7 +29,11 @@ export default function Home() {
           marginBottom: "40px",
         }}
       >
-        환영합니다 {userName}님
+        {userName ? (
+          <>환영합니다 {userName}님❗</>
+        ) : (
+          <>로그인을 해주세요.</>
+        )}
       </div>
 
       {/* 중앙 버튼 목록 */}
