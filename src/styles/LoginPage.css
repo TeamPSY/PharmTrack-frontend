@@ -1,0 +1,135 @@
+/* ============================
+   전체 레이아웃 / 배경
+============================ */
+.login-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+/* 왼쪽 사이드메뉴 */
+.sidebar {
+  width: 250px;
+  background-color: #d4f0c4;
+  box-shadow: 2px 0px 8px rgba(0,0,0,0.1);
+}
+
+/* ============================
+   로그인 박스
+============================ */
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 450px;
+  padding: 30px;
+
+  background: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+  margin: auto;
+}
+
+/* 로고 */
+.login-logo {
+  width: 240px;
+  margin-bottom: 10px;
+}
+
+/* "Login" 텍스트 */
+.login-text {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* ============================
+   입력창
+============================ */
+.login-input {
+  width: 260px;
+  padding: 12px;
+  margin: 12px auto;
+  display: block;
+
+  border: 1px solid #c6e3b8;
+  border-radius: 6px;
+  background-color: #ffffff; /* ← 하얀색으로 변경 */
+}
+
+/* ============================
+   Find ID 버튼
+============================ */
+.find-id-wrapper {
+  width: 300px;   /* ✓ 더 넓게 */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -3px;
+  margin-bottom: 12px;
+}
+
+.find-id-btn {
+  all: unset;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0B4F2E; /* 진한 초록색 */
+  text-align: right;
+}
+
+.find-id-btn:hover {
+  text-decoration: underline;
+  color: #064225; /* 더 진한 초록 */
+}
+
+/* ============================
+   Login 버튼
+============================ */
+.login-button {
+  all: unset;
+  width: 260px;
+  padding: 12px;
+  margin: 10px auto;
+  display: block;
+  background-color: #2f7d32;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background-color: #256628;
+}
+
+/* ============================
+   하단 Sign up 문구
+============================ */
+.signup-wrapper {
+  margin-top: 15px;
+  font-size: 14px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  color: #444;
+}
+
+.signup-btn {
+  all: unset;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0B4F2E; /* 진한 초록 */
+}
+
+.signup-btn:hover {
+  text-decoration: underline;
+  color: #064225; /* 더 진한 초록 */
+}
