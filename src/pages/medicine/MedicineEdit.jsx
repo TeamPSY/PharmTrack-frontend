@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMedicineById, updateMedicine } from "../../api/medicineApi";
+import { getCategoryList } from "../../api/categoryApi";
 
 export default function MedicineEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
@@ -16,12 +19,21 @@ export default function MedicineEdit() {
     categoryId: "",
   });
 
+  // ✔ 카테고리 목록 불러오기
+  useEffect(() => {
+    getCategoryList().then((res) => setCategories(res.data));
+  }, []);
+
+  // ✔ 기존 약품 정보 불러오기
   useEffect(() => {
     getMedicineById(id)
       .then((res) => {
         const data = res.data;
         const medicine = data.data || data;
-        setForm(medicine);
+        setForm({
+          ...medicine,
+          expirationDate: (medicine.expirationDate || "").substring(0, 10),
+        });
       })
       .catch((err) => {
         console.error("데이터 불러오기 실패:", err);
@@ -36,12 +48,13 @@ export default function MedicineEdit() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateMedicine(id, form);
+      await updateMedicine(id, {
+        ...form,
+        categoryId: Number(form.categoryId),
+      });
+
       alert("약품 수정 완료!");
-
-      // 🔥 수정 완료 후 올바른 경로로 이동
       navigate("/medicine/list");
-
     } catch (err) {
       console.error(err);
       alert("수정 실패!");
@@ -53,6 +66,25 @@ export default function MedicineEdit() {
       <h2>약품 수정</h2>
 
       <form onSubmit={onSubmit}>
+        
+        {/* ✔ 카테고리 드롭다운 적용 */}
+        <div>
+          <label>카테고리</label>
+          <select
+            name="categoryId"
+            value={form.categoryId}
+            onChange={onChange}
+            required
+          >
+            <option value="">카테고리 선택</option>
+            {categories.map((c) => (
+              <option key={c.categoryId} value={c.categoryId}>
+                {c.categoryName}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label>이름</label>
           <input
@@ -110,25 +142,14 @@ export default function MedicineEdit() {
           <input
             name="expirationDate"
             type="date"
-            value={(form.expirationDate || "").substring(0, 10)}
+            value={form.expirationDate || ""}
             onChange={onChange}
             required
           />
         </div>
 
-        <div>
-          <label>카테고리 ID</label>
-          <input
-            name="categoryId"
-            type="number"
-            value={form.categoryId || ""}
-            onChange={onChange}
-          />
-        </div>
-
         <button type="submit">수정하기</button>
 
-        {/* 취소 버튼도 올바른 경로로 이동시킴 */}
         <button
           type="button"
           onClick={() => navigate("/medicine/list")}

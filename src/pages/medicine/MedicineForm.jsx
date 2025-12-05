@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addMedicine } from '../../api/medicineApi';
+import { getCategoryList } from '../../api/categoryApi';
 import { useNavigate } from 'react-router-dom';
 
 export default function MedicineForm() {
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
 
   const [form, setForm] = useState({
     categoryId: "",
@@ -15,6 +18,13 @@ export default function MedicineForm() {
     expirationDate: ""
   });
 
+  // ✔ 카테고리 목록 불러오기
+  useEffect(() => {
+    getCategoryList().then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
+
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -25,11 +35,12 @@ export default function MedicineForm() {
     try {
       await addMedicine({
         ...form,
-        categoryId: form.categoryId === "" ? null : Number(form.categoryId),
+        categoryId: Number(form.categoryId),   // ✔ 드롭다운 선택 ID로 저장
         price: Number(form.price),
         stock: Number(form.stock),
-        status: "NORMAL"   // ⭐ 반드시 추가!
+        status: "NORMAL"
       });
+
       alert("약품 등록 성공!");
       navigate("/medicine/list");
     } catch (err) {
@@ -43,9 +54,17 @@ export default function MedicineForm() {
       <h2>약품 등록</h2>
 
       <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", width: "300px" }}>
-        
-        <label>카테고리 ID</label>
-        <input type="number" name="categoryId" value={form.categoryId} onChange={onChange} />
+
+        {/* ✔ 드롭다운으로 변경 */}
+        <label>카테고리</label>
+        <select name="categoryId" value={form.categoryId} onChange={onChange} required>
+          <option value="">카테고리 선택</option>
+          {categories.map((c) => (
+            <option key={c.categoryId} value={c.categoryId}>
+              {c.categoryName}
+            </option>
+          ))}
+        </select>
 
         <label>약품명</label>
         <input type="text" name="name" value={form.name} onChange={onChange} required />
