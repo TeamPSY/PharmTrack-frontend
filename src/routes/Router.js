@@ -28,6 +28,8 @@ import UserLogin from "../pages/auth/UserLogin";
 
 import ProtectedRoute from "../components/ProtectedRoute"; // ⭐ 추가
 
+// import SearchPanel from '../components/SearchPanel';
+
 export default function Router() {
   return (
     <Routes>

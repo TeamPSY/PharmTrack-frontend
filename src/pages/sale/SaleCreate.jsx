@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { createSale } from "../../api/saleApi";
 import { getMedicineList } from "../../api/medicineApi";
@@ -7,16 +8,16 @@ export default function SaleCreate() {
   const navigate = useNavigate();
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
-  const [userId] = useState(1); // 로그인 시스템 없으므로 임시 값
+  const userId = 1; // 임시 로그인
 
-  // 약품 목록 로드
+  // 📌 약품 목록 로드
   useEffect(() => {
     getMedicineList().then((res) => {
       setMedicines(res.data);
     });
   }, []);
 
-  // 장바구니에 담기
+  // 📌 장바구니 추가
   const addToCart = (m) => {
     const exist = cart.find((item) => item.medicineId === m.medicineId);
     if (exist) {
@@ -35,7 +36,7 @@ export default function SaleCreate() {
     ]);
   };
 
-  // 수량 변경
+  // 📌 수량 변경
   const updateQty = (id, qty) => {
     setCart(
       cart.map((item) =>
@@ -44,29 +45,27 @@ export default function SaleCreate() {
     );
   };
 
-  // 판매 등록
+  // 📌 판매 등록 함수
   const submitSale = async () => {
-    // 🔥 총 금액 계산
-    const totalPrice = cart.reduce(
-      (sum, item) => sum + item.unitPrice * item.quantity,
-      0
-    );
+    if (cart.length === 0) {
+      alert("상품을 선택하세요.");
+      return;
+    }
 
-    // 🔥 백엔드로 보낼 데이터
+    // 💡 totalPrice는 프론트에서 계산할 필요 없음 (백엔드에서 자동 계산)
     const saleData = {
       userId,
-      totalPrice, // ← 필수!
       items: cart.map((c) => ({
         medicineId: c.medicineId,
         quantity: c.quantity,
-        unitPrice: c.unitPrice,
+        unitPrice: c.unitPrice, // 백엔드가 그대로 subtotal 계산에 사용
       })),
     };
 
     try {
       const res = await createSale(saleData);
       alert("판매 등록 완료!");
-      navigate(`/sale/detail/${res.data}`); // 판매 상세 페이지로 이동
+      navigate(`/sale/detail/${res.data}`); // saleId로 이동
     } catch (e) {
       console.error(e);
       alert("판매 실패!");
@@ -84,7 +83,6 @@ export default function SaleCreate() {
             [{m.categoryName}] {m.name} ({m.price}원)
             <button onClick={() => addToCart(m)}>담기</button>
           </li>
-
         ))}
       </ul>
 
