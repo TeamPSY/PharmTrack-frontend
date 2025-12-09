@@ -13,21 +13,39 @@ export default function Header() {
   };
 
   return (
-    <header style={{ padding: "10px", background: "#f1f1f1" }}>
-      {/* 홈만 표시 */}
-      <Link to="/">홈</Link>
+    <header style={{ 
+      padding: "10px", 
+      background: "#f1f1f1",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }}>
+      
+      {/* 🏠 홈 아이콘 → 클릭 시 "/" 이동 */}
+      <Link to="/">
+        <img 
+          src="/home.png"   // ⭐ public/home.png 사용법
+          alt="home"
+          style={{ width: "40px", cursor: "pointer" }}
+        />
+      </Link>
 
-      <div style={{ float: "right" }}>
+      <div>
         {user ? (
           <>
             <span>{user.name}님</span>
-            <button onClick={logout} style={{ marginLeft: "10px" }}>로그아웃</button>
+            <button 
+              onClick={logout} 
+              style={{ marginLeft: "10px", cursor: "pointer" }}
+            >
+              로그아웃
+            </button>
           </>
         ) : (
           <>
-            <Link to="/login">로그인</Link>
+            <Link to="/login">login</Link>
             {" | "}
-            <Link to="/register">회원가입</Link>
+            <Link to="/register">signup</Link>
           </>
         )}
       </div>

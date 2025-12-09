@@ -1,218 +1,253 @@
-/* ================================
-   전체 컨테이너
-================================ */
+/* 전체 컨테이너 */
 .inventory-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* ================================
-   검색 영역
-================================ */
-.inventory-search-box {
-    background: #ffffff;
-    padding: 20px;
-    border: 1px solid #c8e6c9;
-    border-radius: 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+/* 카드 스타일 */
+.inventory-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
 }
 
-.inventory-search-row {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* 메시지 박스 */
+.message-box {
+  background-color: #e6f8dd;
+  border-left: 6px solid #4caf50;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  color: #2d6042;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease;
 }
 
-@media (min-width: 768px) {
-    .inventory-search-row {
-        flex-direction: row;
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 검색 input */
-.inventory-search-input {
-    flex: 1;
-    padding: 10px 12px 10px 40px;
-    border: 1px solid #a5d6a7;
-    border-radius: 10px;
-    outline: none;
-    font-size: 15px;
-    background-color: #f1f8f2;
-    color: #1b5e20;
-}
-
-.inventory-search-input:focus {
-    border-color: #66bb6a;
-    box-shadow: 0 0 0 2px rgba(102,187,106,0.3);
-}
-
-/* 카테고리 select */
-.inventory-category-select {
-    padding: 10px 12px;
-    border: 1px solid #a5d6a7;
-    border-radius: 10px;
-    background: #f1f8f2;
-    outline: none;
-    color: #1b5e20;
-}
-
-.inventory-category-select:focus {
-    border-color: #66bb6a;
-    box-shadow: 0 0 0 2px rgba(102,187,106,0.3);
-}
-
-/* 검색 아이콘 위치 */
-.inventory-search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #66bb6a;
-}
-
-
-/* ================================
-   테이블
-================================ */
-.inventory-table-wrapper {
-    background: #ffffff;
-    border: 1px solid #c8e6c9;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-}
-
+/* 테이블 디자인 */
 .inventory-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
 }
 
-.inventory-table thead {
-    background: #e8f5e9;
-    border-bottom: 1px solid #c8e6c9;
+.inventory-table thead th {
+  background-color: #d4f0c4;
+  color: #2d6042;
+  padding: 12px;
+  font-weight: 600;
+  border-bottom: 2px solid #bcdcad;
+  text-align: center;
 }
 
-.inventory-table th {
-    padding: 12px 16px;
-    font-size: 14px;
-    text-align: left;
-    color: #2e7d32;
-    font-weight: 600;
+.inventory-table tbody td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ececec;
 }
 
-.inventory-table td {
-    padding: 14px 16px;
-    font-size: 15px;
-    color: #333;
-    border-bottom: 1px solid #e9f5ea;
+/* hover 효과 */
+.inventory-table tbody tr:hover {
+  background-color: #f5fff1;
+  transition: 0.2s;
 }
 
-.inventory-table tr:hover {
-    background: #f1f8f1;
+/* 버튼 기본 스타일 */
+.btn-icon {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  margin: 0 5px;
+  transition: 0.2s ease;
 }
 
-/* 카테고리 배지 */
-.inventory-badge {
-    display: inline-block;
-    background: #d4f0c4;
-    color: #2e7d32;
-    padding: 4px 10px;
-    font-size: 13px;
-    border-radius: 8px;
+/* +1 버튼 */
+.btn-sell {
+  background-color: #4caf50;
+  color: white;
 }
 
-/* 재고 부족 */
-.inventory-lowstock {
-    color: #f57f17;
-    font-weight: 600;
+.btn-sell:hover {
+  background-color: #3d8c42;
+  transform: translateY(-2px);
 }
 
-/* 유통기한 임박 */
-.inventory-expire {
-    color: #c62828;
-    font-weight: 600;
+/* -1 버튼 */
+.btn-delete {
+  background-color: #e57373;
+  color: white;
 }
 
-/* ================================
-   작업 버튼들
-================================ */
-.inventory-action-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+.btn-delete:hover {
+  background-color: #d45f5f;
+  transform: translateY(-2px);
 }
 
-.inventory-btn {
-    padding: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.15s;
-    border: none;
-    font-size: 14px;
+/* 재고 직접 입력 */
+.stock-input {
+  width: 70px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #b5ccb5;
+  text-align: center;
+  font-size: 15px;
 }
 
-/* 판매 버튼 */
-.inventory-btn-sell {
-    color: #2e7d32;
-    background: #e3f5e5;
+.stock-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 3px rgba(76, 175, 80, 0.4);
 }
 
-.inventory-btn-sell:hover {
-    background: #cdebd0;
+/* 저장 버튼 (초록색) */
+.btn-green {
+  padding: 8px 14px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
 }
 
-/* 수정 버튼 */
-.inventory-btn-edit {
-    color: #1b5e20;
-    background: #e8f5e9;
+.btn-green:hover {
+  background-color: #3d8c42;
+  transform: translateY(-2px);
 }
 
-.inventory-btn-edit:hover {
-    background: #d7ecd8;
+/* 전체 레이아웃: 왼쪽 + 오른쪽 */
+.inventory-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* 삭제 버튼 */
-.inventory-btn-delete {
-    color: #c62828;
-    background: #ffebee;
+/* 왼쪽 영역 */
+.inventory-left {
+  flex: 3;
 }
 
-.inventory-btn-delete:hover {
-    background: #ffd7d9;
+/* 오른쪽 영역 */
+.inventory-right {
+  flex: 1.2;
 }
 
-/* ================================
-   Summary 박스
-================================ */
-.inventory-summary {
-    background: #f1f8f1;
-    border: 1px solid #c8e6c9;
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+/* 재고 부족 카드 */
+.alert-card {
+  background: #fff7ef;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 }
 
-.inventory-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+.alert-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d87b2f;
+  margin-bottom: 12px;
 }
 
-@media (min-width: 768px) {
-    .inventory-summary-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+.no-alert {
+  color: #555;
+  font-size: 14px;
+  padding: 10px 0;
 }
 
-.inventory-summary-label {
-    font-size: 14px;
-    color: #2e7d32;
+/* 개별 알림 아이템 */
+.alert-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 5px solid #ff9b63;
 }
 
-.inventory-summary-value {
-    margin-top: 6px;
-    font-size: 18px;
-    font-weight: 700;
-    color: #1b5e20;
+.alert-item:hover {
+  background-color: #fff0e2;
+  transition: 0.2s;
+}
+
+.alert-category {
+  font-size: 13px;
+  color: #999;
+}
+
+.alert-stock {
+  color: #d45a2a;
+  font-weight: 600;
+}
+
+/* 정렬 버튼 박스 */
+.inventory-sort-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* 정렬 버튼 */
+.sort-btn {
+  padding: 8px 12px;
+  background-color: #e6f8dd;
+  border: 1px solid #b5d8b0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d6042;
+  transition: 0.2s ease;
+}
+
+.sort-btn:hover {
+  background-color: #c9efc1;
+  transform: translateY(-2px);
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  background-color: #d4f0c4;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2d6042;
+}
+
+.page-btn.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+
+.inventory-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.inventory-left {
+  flex: 3;
+}
+
+.inventory-right {
+  flex: 1.2;
 }

@@ -1,0 +1,151 @@
+.sale-create-container {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  font-family: "Pretendard", sans-serif;
+}
+
+.sale-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2b4b72;
+  margin-bottom: 20px;
+}
+
+/* 약품 목록 박스 */
+.medicine-list-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 80, 160, 0.1);
+}
+
+.medicine-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.medicine-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e1e7f3;
+}
+
+.add-btn {
+  padding: 6px 12px;
+  background: #6eaaff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background: #5598ff;
+}
+
+.section-divider {
+  margin: 30px 0;
+  border: 0;
+  border-top: 2px solid #e1e7f3;
+}
+
+/* 선택 상품 테이블 */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0, 80, 160, 0.1);
+}
+
+.cart-table th {
+  background: #e8f1ff;
+  color: #2b4b72;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.cart-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e1e7f3;
+}
+
+.qty-input {
+  width: 60px;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #c5d9f5;
+}
+
+.submit-btn {
+  margin-top: 25px;
+  padding: 12px 20px;
+  background: #2b72ff;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: block;
+}
+
+.submit-btn:hover {
+  background: #1e5bdd;
+}
+
+.empty-text {
+  color: #888;
+  padding: 10px 0;
+}
+
+/* 전체 2-Column 레이아웃 */
+.sale-flex-box {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* 왼쪽(약품 목록) */
+.left-box {
+  flex: 1;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 80, 160, 0.1);
+}
+
+/* 오른쪽(선택 상품) */
+.right-box {
+  flex: 1.2;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 80, 160, 0.1);
+  height: fit-content;
+}
+
+.goto-list-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px 20px;
+  background: #6eaaff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.goto-list-btn:hover {
+  background: #5598ff;
+}

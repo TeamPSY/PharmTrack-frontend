@@ -2,24 +2,20 @@ import React, { useEffect, useState } from "react";
 import { createSale } from "../../api/saleApi";
 import { getMedicineList } from "../../api/medicineApi";
 import { useNavigate } from "react-router-dom";
+import "../../styles/SaleCreate.css";
 
 export default function SaleCreate() {
   const navigate = useNavigate();
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
-  const [userId] = useState(1); // 로그인 시스템 없으므로 임시 값
+  const [userId] = useState(1);
 
-  // 약품 목록 로드
   useEffect(() => {
-    getMedicineList().then((res) => {
-      setMedicines(res.data);
-    });
+    getMedicineList().then((res) => setMedicines(res.data));
   }, []);
 
-  // 장바구니에 담기
   const addToCart = (m) => {
-    const exist = cart.find((item) => item.medicineId === m.medicineId);
-    if (exist) {
+    if (cart.find((item) => item.medicineId === m.medicineId)) {
       alert("이미 담겨 있습니다.");
       return;
     }
@@ -35,7 +31,6 @@ export default function SaleCreate() {
     ]);
   };
 
-  // 수량 변경
   const updateQty = (id, qty) => {
     setCart(
       cart.map((item) =>
@@ -44,18 +39,15 @@ export default function SaleCreate() {
     );
   };
 
-  // 판매 등록
   const submitSale = async () => {
-    // 🔥 총 금액 계산
     const totalPrice = cart.reduce(
       (sum, item) => sum + item.unitPrice * item.quantity,
       0
     );
 
-    // 🔥 백엔드로 보낼 데이터
     const saleData = {
       userId,
-      totalPrice, // ← 필수!
+      totalPrice,
       items: cart.map((c) => ({
         medicineId: c.medicineId,
         quantity: c.quantity,
@@ -66,7 +58,7 @@ export default function SaleCreate() {
     try {
       const res = await createSale(saleData);
       alert("판매 등록 완료!");
-      navigate(`/sale/detail/${res.data}`); // 판매 상세 페이지로 이동
+      navigate(`/sale/detail/${res.data}`);
     } catch (e) {
       console.error(e);
       alert("판매 실패!");
@@ -74,60 +66,81 @@ export default function SaleCreate() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>판매 등록</h2>
+    <div className="sale-create-container">
+      <h2 className="sale-title">📦 판매 등록</h2>
 
-      <h3>약품 목록</h3>
-      <ul>
-        {medicines.map((m) => (
-          <li key={m.medicineId}>
-            [{m.categoryName}] {m.name} ({m.price}원)
-            <button onClick={() => addToCart(m)}>담기</button>
-          </li>
+      {/* ⭐ 2-Column 전체 박스 */}
+      <div className="sale-flex-box">
 
-        ))}
-      </ul>
-
-      <hr />
-
-      <h3>선택한 상품</h3>
-      {cart.length === 0 ? (
-        <p>상품을 추가하세요</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>상품명</th>
-              <th>단가</th>
-              <th>수량</th>
-              <th>소계</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cart.map((item) => (
-              <tr key={item.medicineId}>
-                <td>{item.name}</td>
-                <td>{item.unitPrice}</td>
-                <td>
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateQty(item.medicineId, Number(e.target.value))
-                    }
-                  />
-                </td>
-                <td>{item.unitPrice * item.quantity}</td>
-              </tr>
+        {/* 왼쪽 박스 - 약품 목록 */}
+        <div className="left-box">
+          <h3>약품 목록</h3>
+          <ul className="medicine-list">
+            {medicines.map((m) => (
+              <li key={m.medicineId} className="medicine-item">
+                <span>
+                  [{m.categoryName}] {m.name} ({m.price}원)
+                </span>
+                <button className="add-btn" onClick={() => addToCart(m)}>
+                  담기
+                </button>
+              </li>
             ))}
-          </tbody>
-        </table>
-      )}
+          </ul>
+        </div>
 
-      <button onClick={submitSale} style={{ marginTop: "20px" }}>
-        판매 완료
-      </button>
+        {/* 오른쪽 박스 - 장바구니 */}
+        <div className="right-box">
+          <h3>🛒 선택한 상품</h3>
+
+          {cart.length === 0 ? (
+            <p className="empty-text">상품을 추가하세요.</p>
+          ) : (
+            <table className="cart-table">
+              <thead>
+                <tr>
+                  <th>상품명</th>
+                  <th>단가</th>
+                  <th>수량</th>
+                  <th>소계</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart.map((item) => (
+                  <tr key={item.medicineId}>
+                    <td>{item.name}</td>
+                    <td>{item.unitPrice.toLocaleString()}원</td>
+                    <td>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        className="qty-input"
+                        onChange={(e) =>
+                          updateQty(item.medicineId, Number(e.target.value))
+                        }
+                      />
+                    </td>
+                    <td>{(item.unitPrice * item.quantity).toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          <button className="submit-btn" onClick={submitSale}>
+            판매 완료
+          </button>
+
+          {/* ⭐ 판매 내역 바로가기 버튼 추가 */}
+          <button
+            className="goto-list-btn"
+            onClick={() => navigate("/sale/list")}
+          >
+            판매 내역 바로가기
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

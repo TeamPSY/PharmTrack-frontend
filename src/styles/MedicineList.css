@@ -1,0 +1,178 @@
+/* 전체 컨테이너 */
+.list-container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.list-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2f7a4f;
+  margin-bottom: 20px;
+}
+
+/* 로딩/에러/빈 데이터 */
+.loading-text {
+  font-size: 18px;
+  color: #555;
+}
+
+.error-text {
+  font-size: 18px;
+  color: red;
+}
+
+.empty-text {
+  font-size: 18px;
+  color: #777;
+}
+
+/* 테이블 카드 스타일 */
+.table-wrapper {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* 테이블 기본 */
+.medicine-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.medicine-table th {
+  background: #d4f0c4;
+  padding: 12px;
+  color: #2d6042;
+  font-weight: bold;
+  border-bottom: 2px solid #bcdcad;
+}
+
+.medicine-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* hover 효과 */
+.medicine-table tbody tr:hover {
+  background: #f5fff1;
+  transition: 0.2s ease;
+}
+
+/* 수정 버튼 */
+.edit-btn {
+  padding: 6px 12px;
+  background: #4caf50;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #3f9444;
+}
+
+/* 페이지네이션 */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  background-color: #d4f0c4;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2d6042;
+  transition: 0.2s;
+}
+
+.page-btn:hover {
+  background-color: #c3e7b2;
+}
+
+.page-btn.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* 정렬 버튼 박스 */
+.sort-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* 정렬 버튼 */
+.sort-btn {
+  padding: 8px 12px;
+  background-color: #e6f8dd;
+  border: 1px solid #a9d9a0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d6042;
+  transition: 0.2s ease;
+}
+
+.sort-btn:hover {
+  background-color: #cdeec6;
+}
+
+.medicine-layout {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.medicine-left {
+  flex: 3;
+}
+
+.medicine-right {
+  flex: 1.2;
+}
+
+/* 유통기한 안내 카드 */
+.expiry-card {
+  background: #fff7ef;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.expiry-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d87b2f;
+  margin-bottom: 12px;
+}
+
+.no-expiry {
+  color: #777;
+  padding: 10px 0;
+}
+
+.expiry-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 5px solid #ffa86b;
+}
+
+.expiry-date {
+  font-size: 13px;
+  color: #777;
+}
+
