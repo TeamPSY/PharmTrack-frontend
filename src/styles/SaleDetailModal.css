@@ -1,0 +1,115 @@
+/* 검은 반투명 배경 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+}
+
+/* 모달 박스 (영수증 스타일) */
+.receipt-modal {
+  width: 420px;
+  background: #fffdfa;
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  font-family: "Pretendard", sans-serif;
+  animation: fadeIn 0.2s ease-out;
+  border: 2px dashed #d4c7b0; /* 영수증 느낌 */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 헤더 */
+.receipt-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.receipt-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.receipt-header p {
+  color: #777;
+  font-size: 14px;
+}
+
+/* info 섹션 */
+.receipt-info p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+/* 절취선 */
+.receipt-divider {
+  border-bottom: 2px dashed #bbb;
+  margin: 14px 0;
+}
+
+/* 테이블 */
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.receipt-table th {
+  background: #f1e9d9;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.receipt-table td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+/* footer 버튼들 */
+.receipt-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.close-btn,
+.new-sale-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.close-btn {
+  background: #ccc;
+}
+
+.close-btn:hover {
+  background: #b6b6b6;
+}
+
+.new-sale-btn {
+  background: #6eaaff;
+  color: #fff;
+}
+
+.new-sale-btn:hover {
+  background: #5598ff;
+}
+

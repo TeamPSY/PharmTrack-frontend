@@ -1,0 +1,103 @@
+/* 전체 화면 컨테이너 */
+.register-container {
+  width: 100%;
+  height: 100vh;
+  background: #f0f7ff; /* 연한 하늘색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Pretendard", sans-serif;
+}
+
+/* 회원가입 박스 */
+.register-box {
+  width: 380px;
+  padding: 40px 35px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 25px rgba(0, 120, 255, 0.17);
+  text-align: center;
+}
+
+/* 타이틀 */
+.register-text {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #2b4b72;
+}
+
+/* 입력 폼 */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* 입력창 */
+.register-input {
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1.8px solid #bcd7ff;
+  background: #ffffff;
+  transition: 0.2s;
+}
+
+.register-input:focus {
+  outline: none;
+  border-color: #69a8ff;
+  box-shadow: 0 0 8px rgba(100, 150, 255, 0.35);
+}
+
+/* 회원가입 버튼 */
+.register-button {
+  margin-top: 5px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  background: #6eaaff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(90, 150, 255, 0.3);
+  transition: 0.25s;
+}
+
+.register-button:hover {
+  background: #5598ff;
+  transform: scale(1.03);
+}
+
+/* 로그인 이동 문구 */
+.register-footer {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #505050;
+}
+
+.register-footer-btn {
+  background: none;
+  border: none;
+  color: #6eaaff;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: 0.2s;
+}
+
+.register-footer-btn:hover {
+  color: #4b89ff;
+  text-decoration: underline;
+}
+
+/* 전화번호 & 약국명 placeholder 색 진하게 */
+.register-input::placeholder {
+  color: #8aa4c3;
+}
+
+/* 입력칸 hover 효과 */
+.register-input:hover {
+  border-color: #8bb9ff;
+}
