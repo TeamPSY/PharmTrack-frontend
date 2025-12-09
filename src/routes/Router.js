@@ -10,6 +10,9 @@ import MedicineForm from '../pages/medicine/MedicineForm';
 import MedicineEdit from "../pages/medicine/MedicineEdit";
 import MedicineDelete from '../pages/medicine/MedicineDelete';
 
+// 🌟 유통기한 임박 목록 페이지 임포트
+import MedicineExpiringList from '../pages/medicine/MedicineExpiringList';
+
 //판매관리 페이지들 임포트
 import SaleMenu from "../pages/sale/SaleMenu";
 import SaleCreate from "../pages/sale/SaleCreate";
@@ -75,6 +78,16 @@ export default function Router() {
             <MedicineMenu />
           </ProtectedRoute>
         }
+      />
+
+      {/* 🌟 유통기한 임박 목록 라우트 추가 */}
+      <Route
+        path="/medicine/expiring-list"
+        element={
+          <ProtectedRoute>
+            <MedicineExpiringList />
+          </ProtectedRoute>
+      }
       />
 
       <Route
