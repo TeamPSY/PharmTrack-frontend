@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Home.css";   // ← 새로 추가!
 
 export default function Home() {
   const navigate = useNavigate();
@@ -9,26 +10,10 @@ export default function Home() {
   const userName = user ? user.name : null;
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        border: "2px solid #000",
-        boxSizing: "border-box",
-        padding: "30px",
-        position: "relative",
-      }}
-    >
+    <div className="home-container">
+
       {/* 좌측 상단 환영 문구 박스 */}
-      <div
-        style={{
-          border: "2px solid #555",
-          padding: "20px",
-          width: "250px",
-          fontSize: "20px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="welcome-box">
         {userName ? (
           <>환영합니다 {userName}님❗</>
         ) : (
@@ -37,48 +22,29 @@ export default function Home() {
       </div>
 
       {/* 중앙 버튼 목록 */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "25px",
-          width: "300px",
-        }}
-      >
+      <div className="button-wrapper">
         <button
           onClick={() => navigate("/inventory")}
-          style={buttonStyle}
+          className="home-btn"
         >
-          재고관리
+          📦 재고관리
         </button>
 
         <button
-          onClick={() => navigate("/medicine")}
-          style={buttonStyle}
+          onClick={() => navigate("/medicine/list")}
+          className="home-btn"
         >
-          약품관리
+          💊 약품관리
         </button>
 
         <button
           onClick={() => navigate("/sale")}
-          style={buttonStyle}
+          className="home-btn"
         >
-          판매관리
+          📊 판매관리(통계)
         </button>
+        
       </div>
     </div>
   );
 }
-
-// 버튼 공통 스타일
-const buttonStyle = {
-  padding: "25px",
-  fontSize: "22px",
-  border: "2px solid #444",
-  background: "white",
-  cursor: "pointer",
-};

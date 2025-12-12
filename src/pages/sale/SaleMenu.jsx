@@ -1,17 +1,24 @@
 import { Link } from "react-router-dom";
+import "../../styles/SaleMenu.css"; // ⭐ CSS 연결
 
 export default function SaleMenu() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>판매 관리</h2>
+    <div className="sale-container">
+      <h2 className="sale-title">🛒 판매 관리</h2>
 
-      <button style={{ display: "block", margin: "10px 0" }}>
-        <Link to="/sale/create">판매 등록</Link>
-      </button>
+      <div className="menu-wrapper">
+        <Link to="/sale/create" className="menu-btn">
+          판매 등록
+        </Link>
 
-      <button style={{ display: "block", margin: "10px 0" }}>
-        <Link to="/sale/list">판매 내역 조회</Link>
-      </button>
+        <Link to="/sale/list" className="menu-btn">
+          판매 내역 조회
+        </Link>
+
+        <Link to="/sale/Statistic" className="menu-btn">
+          판매 통계
+        </Link>
+      </div>
     </div>
   );
 }

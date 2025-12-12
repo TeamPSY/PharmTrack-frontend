@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { loginUser } from "../../api/authApi";
 import { useNavigate } from "react-router-dom";
+import "../../styles/UserLogin.css";
 
 export default function UserLogin() {
   const navigate = useNavigate();
@@ -17,49 +18,62 @@ export default function UserLogin() {
     e.preventDefault();
     try {
       const res = await loginUser(form);
-
-      console.log("로그인 응답:", res?.data); // <- 꼭 확인하세요
-
-      // 응답 구조 보호적으로 파싱 (res.data.user OR res.data)
       const user = res?.data?.user ?? res?.data ?? null;
 
       if (!user) {
-        alert("로그인 실패! (서버 응답 없음)");
+        alert("로그인 실패!");
         return;
       }
 
-      // 전체 user 객체를 저장 (나중에 이름, 역할 등 사용 가능)
       localStorage.setItem("user", JSON.stringify(res.data));
-      // id만 따로 쓸거면 user.userId 혹은 user.id로 읽으면 됨
       localStorage.setItem("userId", user.userId ?? user.id ?? "");
 
       alert("로그인 성공!");
-      navigate("/"); // 홈으로
+      navigate("/");
     } catch (err) {
-      console.error("로그인 중 에러:", err);
       alert("로그인 실패");
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>로그인</h2>
-      <form onSubmit={onSubmit}>
-        <input
-          name="username"
-          placeholder="아이디"
-          value={form.username}
-          onChange={onChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="비밀번호"
-          value={form.password}
-          onChange={onChange}
-        />
-        <button type="submit">로그인</button>
-      </form>
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-text">Login</h2>
+
+        <form className="login-form" onSubmit={onSubmit}>
+          <input
+            name="username"
+            placeholder="아이디"
+            className="login-input"
+            value={form.username}
+            onChange={onChange}
+          />
+
+          <input
+            name="password"
+            type="password"
+            placeholder="비밀번호"
+            className="login-input"
+            value={form.password}
+            onChange={onChange}
+          />
+
+          <button type="submit" className="login-button">
+            로그인
+          </button>
+
+          <div className="signup-wrapper">
+            <span>Don't have an account?</span>
+            <button
+              type="button"
+              className="signup-btn"
+              onClick={() => navigate("/register")}
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
