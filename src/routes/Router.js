@@ -25,6 +25,7 @@ import InventoryList from "../pages/inventory/InventoryList";
 // 사용자 인증 페이지 임포트
 import UserRegister from "../pages/auth/UserRegister";
 import UserLogin from "../pages/auth/UserLogin";
+import UserUpdate from "../pages/auth/UserUpdate";
 
 import ProtectedRoute from "../components/ProtectedRoute"; // ⭐ 추가
 
@@ -138,6 +139,8 @@ export default function Router() {
       {/* 인증 (로그인 필요 없음) */}
       <Route path="/register" element={<UserRegister />} />
       <Route path="/login" element={<UserLogin />} />
+      <Route path="/user/update" element={<UserUpdate />} />
+
     </Routes>
   );
 }

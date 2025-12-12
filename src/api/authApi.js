@@ -16,3 +16,8 @@ export const getLoginUser = () =>
 
 export const logoutUser = () =>
   API.post("/api/auth/logout");
+
+export const updateUser = (id, data) =>
+  API.put(`/api/auth/update/${id}`, data);
+
+

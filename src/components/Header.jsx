@@ -21,7 +21,18 @@ export default function Header() {
         {user ? (
           <>
             <span>{user.name}님</span>
-            <button onClick={logout} style={{ marginLeft: "10px" }}>로그아웃</button>
+
+            {/* 🔥 회원정보 수정 페이지 이동 버튼 */}
+            <button
+              onClick={() => navigate("/user/update")}
+              style={{ marginLeft: "10px" }}
+            >
+              회원정보 수정
+            </button>
+
+            <button onClick={logout} style={{ marginLeft: "10px" }}>
+              로그아웃
+            </button>
           </>
         ) : (
           <>
