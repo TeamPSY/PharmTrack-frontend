@@ -1,9 +1,8 @@
-
 /* 전체 화면 */
 .login-container {
   width: 100%;
   height: 100vh;
-  background: #f0f7ff; /* 연한 하늘색 */
+  background: #f3fbf6; /* ⭐ 연한 연두 배경 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +16,7 @@
   background: white;
   border-radius: 18px;
 
-  box-shadow: 0 6px 25px rgba(0, 120, 255, 0.17);
+  box-shadow: 0 6px 25px rgba(120, 200, 150, 0.18); /* 연두 그림자 */
   text-align: center;
 }
 
@@ -26,7 +25,7 @@
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 25px;
-  color: #2b4b72;
+  color: #2e7d32; /* ⭐ 진한 그린 */
 }
 
 /* 입력 폼 */
@@ -42,15 +41,15 @@
   font-size: 16px;
   border-radius: 10px;
 
-  border: 1.8px solid #bcd7ff;
+  border: 1.8px solid #bfe5c8; /* 연두 테두리 */
   background: #ffffff;
   transition: 0.2s;
 }
 
 .login-input:focus {
   outline: none;
-  border-color: #69a8ff;
-  box-shadow: 0 0 8px rgba(100, 150, 255, 0.35);
+  border-color: #66bb6a;
+  box-shadow: 0 0 8px rgba(100, 200, 140, 0.35);
 }
 
 /* Forgot ID */
@@ -64,13 +63,13 @@
   background: none;
   border: none;
   font-size: 14px;
-  color: #6c9fff;
+  color: #66bb6a;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .find-id-btn:hover {
-  color: #4b8dff;
+  color: #43a047;
   text-decoration: underline;
 }
 
@@ -81,18 +80,18 @@
   font-size: 18px;
   font-weight: 600;
 
-  background: #6eaaff;
+  background: #66bb6a; /* ⭐ 메인 연두 */
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
 
-  box-shadow: 0 4px 10px rgba(90, 150, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(100, 180, 120, 0.35);
   transition: 0.25s;
 }
 
 .login-button:hover {
-  background: #5598ff;
+  background: #4caf50;
   transform: scale(1.03);
 }
 
@@ -106,7 +105,7 @@
 .signup-btn {
   background: none;
   border: none;
-  color: #6eaaff;
+  color: #66bb6a;
   cursor: pointer;
   font-weight: 600;
   margin-left: 5px;
@@ -114,6 +113,6 @@
 }
 
 .signup-btn:hover {
-  color: #4b89ff;
+  color: #43a047;
   text-decoration: underline;
 }

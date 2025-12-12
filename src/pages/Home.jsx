@@ -1,49 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Home.css";   // ← 새로 추가!
+import "../styles/Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
-
-  // 로그인 정보 불러오기
   const user = JSON.parse(localStorage.getItem("user"));
   const userName = user ? user.name : null;
 
   return (
     <div className="home-container">
-
-      {/* 좌측 상단 환영 문구 박스 */}
+      {/* 환영 카드 */}
       <div className="welcome-box">
         {userName ? (
-          <>환영합니다 {userName}님❗</>
+          <h2>👋 {userName}님, 환영합니다</h2>
         ) : (
-          <>로그인을 해주세요.</>
+          <h2>로그인 후 이용해주세요</h2>
         )}
+        <p>약국 운영을 쉽고 효율적으로 관리하세요</p>
       </div>
 
-      {/* 중앙 버튼 목록 */}
+      {/* 메뉴 카드 */}
       <div className="button-wrapper">
-        <button
-          onClick={() => navigate("/inventory")}
-          className="home-btn"
-        >
-          📦 재고관리
-        </button>
+        <div className="home-card" onClick={() => navigate("/inventory")}>
+          📦
+          <span>재고 관리</span>
+        </div>
 
-        <button
-          onClick={() => navigate("/medicine/list")}
-          className="home-btn"
-        >
-          💊 약품관리
-        </button>
+        <div className="home-card" onClick={() => navigate("/medicine/list")}>
+          💊
+          <span>약품 관리</span>
+        </div>
 
-        <button
-          onClick={() => navigate("/sale")}
-          className="home-btn"
-        >
-          📊 판매관리(통계)
-        </button>
-        
+        <div className="home-card" onClick={() => navigate("/sale")}>
+          📊
+          <span>판매 관리</span>
+        </div>
       </div>
     </div>
   );

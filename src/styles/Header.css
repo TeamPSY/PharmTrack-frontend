@@ -1,0 +1,59 @@
+.header {
+  height: 70px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.header-left .logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.header-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #e8f5e9;
+  color: #2e7d32;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.header-btn:hover {
+  background: #c8e6c9;
+}
+
+.logout {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.logout:hover {
+  background: #ffcdd2;
+}
+
+.header-link {
+  text-decoration: none;
+  color: #4caf50;
+  font-weight: 500;
+}

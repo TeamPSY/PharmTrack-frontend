@@ -1,41 +1,47 @@
-/* 전체 영역 */
 .sale-container {
-  padding: 30px;
-  max-width: 500px;
-  margin: 0 auto;
+  padding: 50px;
+  font-family: "Pretendard", sans-serif;
 }
 
-/* 제목 */
 .sale-title {
   font-size: 26px;
   font-weight: 700;
-  color: #2f7a4f;
-  margin-bottom: 25px;
+  color: #2e7d32;
+  margin-bottom: 30px;
 }
 
-/* 메뉴 버튼 영역 */
+/* 카드 레이아웃 */
 .menu-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* 메뉴 카드 */
+.menu-card {
+  background: #e8f5e9;
+  border-radius: 20px;
+  padding: 30px;
+  text-decoration: none;
+
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-/* 버튼 스타일처럼 보이는 Link */
-.menu-btn {
-  display: block;
-  padding: 14px 20px;
-  background-color: #d4f0c4;
-  color: #2d6042;
-  font-weight: 600;
-  text-decoration: none;
+  align-items: center;
   text-align: center;
-  border-radius: 10px;
-  font-size: 18px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  transition: 0.2s ease;
+
+  box-shadow: 0 8px 20px rgba(120, 200, 150, 0.18);
+  transition: 0.25s;
 }
 
-.menu-btn:hover {
-  background-color: #c4e8b3;
-  transform: translateY(-2px);
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(120, 200, 150, 0.3);
 }
+
+/* 아이콘 */
+.menu-icon {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+/* 제목 */
