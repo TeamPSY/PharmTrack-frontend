@@ -1,144 +1,199 @@
 import React, { useEffect, useState } from "react";
-import { createSale } from "../../api/saleApi";
-import { getMedicineList } from "../../api/medicineApi";
-import { useNavigate } from "react-router-dom";
 import "../../styles/SaleCreate.css";
+import { getMedicineList } from "../../api/medicineApi";
+import { createSale } from "../../api/saleApi";
+import { useNavigate } from "react-router-dom";
 
 export default function SaleCreate() {
-  const navigate = useNavigate();
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
-  const [userId] = useState(1);
 
+  /* 페이지네이션 */
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
+
+  /* 약품 목록 불러오기 */
   useEffect(() => {
-    getMedicineList().then((res) => setMedicines(res.data));
+    const load = async () => {
+      try {
+        const res = await getMedicineList();
+        setMedicines(Array.isArray(res.data) ? res.data : []);
+      } catch (e) {
+        console.error("약품 목록 불러오기 실패:", e);
+        setMedicines([]);
+      }
+    };
+    load();
   }, []);
 
-  const addToCart = (m) => {
-    if (cart.find((item) => item.medicineId === m.medicineId)) {
-      alert("이미 담겨 있습니다.");
+  /* medicines 변경 시 페이지 초기화 */
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [medicines.length]);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentMedicines = medicines.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const totalPages = Math.ceil(medicines.length / itemsPerPage);
+
+  /* 장바구니 추가 */
+  const addToCart = (medicine) => {
+    const exists = cart.find(
+      (item) => item.medicineId === medicine.medicineId
+    );
+
+    if (exists) {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.medicineId === medicine.medicineId
+            ? { ...item, qty: item.qty + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart((prev) => [...prev, { ...medicine, qty: 1 }]);
+    }
+  };
+
+  /* 총 금액 */
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + Number(item.price) * item.qty,
+    0
+  );
+
+  /* ✅ 판매 등록 → 영수증 이동 */
+  const submitSale = async () => {
+    if (cart.length === 0) {
+      alert("선택된 상품이 없습니다.");
       return;
     }
 
-    setCart([
-      ...cart,
-      {
-        medicineId: m.medicineId,
-        name: m.name,
-        unitPrice: m.price,
-        quantity: 1,
-      },
-    ]);
-  };
-
-  const updateQty = (id, qty) => {
-    setCart(
-      cart.map((item) =>
-        item.medicineId === id ? { ...item, quantity: qty } : item
-      )
-    );
-  };
-
-  const submitSale = async () => {
-    const totalPrice = cart.reduce(
-      (sum, item) => sum + item.unitPrice * item.quantity,
-      0
-    );
-
-    const saleData = {
-      userId,
-      totalPrice,
-      items: cart.map((c) => ({
-        medicineId: c.medicineId,
-        quantity: c.quantity,
-        unitPrice: c.unitPrice,
+    const payload = {
+      totalPrice: totalPrice,
+      saleItems: cart.map((item) => ({
+        medicineId: item.medicineId,
+        quantity: item.qty,
+        price: item.price,
       })),
     };
 
+    console.log("📦 판매 요청 payload", payload);
+
     try {
-      const res = await createSale(saleData);
-      alert("판매 등록 완료!");
-      navigate(`/sale/detail/${res.data}`);
+      const res = await createSale(payload);
+      const saleId = res.data.saleId;
+
+      navigate(`/sale/detail/${saleId}`);
     } catch (e) {
-      console.error(e);
-      alert("판매 실패!");
+      console.error("❌ 판매 등록 실패:", e.response?.data || e);
+      alert("판매 등록 실패 (요청 데이터 확인)");
     }
   };
 
   return (
     <div className="sale-create-container">
-      <h2 className="sale-title">📦 판매 등록</h2>
+      <h2 className="sale-title">🛒 판매 등록</h2>
 
-      {/* ⭐ 2-Column 전체 박스 */}
       <div className="sale-flex-box">
-
-        {/* 왼쪽 박스 - 약품 목록 */}
+        {/* 왼쪽: 약품 목록 */}
         <div className="left-box">
-          <h3>약품 목록</h3>
-          <ul className="medicine-list">
-            {medicines.map((m) => (
-              <li key={m.medicineId} className="medicine-item">
-                <span>
-                  [{m.categoryName}] {m.name} ({m.price}원)
-                </span>
-                <button className="add-btn" onClick={() => addToCart(m)}>
-                  담기
-                </button>
-              </li>
-            ))}
-          </ul>
+          <h3 className="section-title">약품 목록</h3>
+
+          {medicines.length === 0 ? (
+            <p className="empty-text">약품 데이터가 없습니다.</p>
+          ) : (
+            <>
+              <table className="medicine-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>약품명</th>
+                    <th>제조사</th>
+                    <th>가격</th>
+                    <th>추가</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentMedicines.map((m, idx) => (
+                    <tr key={m.medicineId}>
+                      <td>{startIndex + idx + 1}</td>
+                      <td className="medicine-name">{m.name}</td>
+                      <td>{m.manufacturer}</td>
+                      <td>{Number(m.price).toLocaleString()}원</td>
+                      <td>
+                        <button
+                          className="add-btn"
+                          onClick={() => addToCart(m)}
+                        >
+                          추가
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* 페이지네이션 */}
+              <div className="pagination">
+                {Array.from({ length: totalPages }).map((_, i) => (
+                  <button
+                    key={i}
+                    className={`page-btn ${
+                      currentPage === i + 1 ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
-        {/* 오른쪽 박스 - 장바구니 */}
+        {/* 오른쪽: 선택 상품 */}
         <div className="right-box">
-          <h3>🛒 선택한 상품</h3>
+          <h3 className="section-title">선택 상품</h3>
 
           {cart.length === 0 ? (
-            <p className="empty-text">상품을 추가하세요.</p>
+            <p className="empty-text">선택된 상품이 없습니다.</p>
           ) : (
             <table className="cart-table">
               <thead>
                 <tr>
-                  <th>상품명</th>
-                  <th>단가</th>
+                  <th>약품명</th>
                   <th>수량</th>
-                  <th>소계</th>
+                  <th>금액</th>
                 </tr>
               </thead>
               <tbody>
                 {cart.map((item) => (
                   <tr key={item.medicineId}>
                     <td>{item.name}</td>
-                    <td>{item.unitPrice.toLocaleString()}원</td>
+                    <td>{item.qty}</td>
                     <td>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        className="qty-input"
-                        onChange={(e) =>
-                          updateQty(item.medicineId, Number(e.target.value))
-                        }
-                      />
+                      {(Number(item.price) * item.qty).toLocaleString()}원
                     </td>
-                    <td>{(item.unitPrice * item.quantity).toLocaleString()}원</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
 
-          <button className="submit-btn" onClick={submitSale}>
-            판매 완료
-          </button>
+          <div className="summary-box">
+            <div className="summary-row">
+              <span>총 금액</span>
+              <strong>{totalPrice.toLocaleString()}원</strong>
+            </div>
 
-          {/* ⭐ 판매 내역 바로가기 버튼 추가 */}
-          <button
-            className="goto-list-btn"
-            onClick={() => navigate("/sale/list")}
-          >
-            판매 내역 바로가기
-          </button>
+            <button className="submit-btn" onClick={submitSale}>
+              판매 등록
+            </button>
+          </div>
         </div>
       </div>
     </div>

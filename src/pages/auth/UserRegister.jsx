@@ -11,17 +11,47 @@ export default function UserRegister() {
     password: "",
     name: "",
     phone: "",
-    pharmacyName: "", // ⭐ 추가됨
+    pharmacyName: "",
   });
+
+  const [errors, setErrors] = useState({});
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" }); // 입력 시 에러 제거
+  };
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.username)) {
+      newErrors.username = "올바른 이메일 형식을 입력하세요.";
+    }
+
+    if (form.password.length < 8) {
+      newErrors.password = "비밀번호는 8자 이상이어야 합니다.";
+    }
+
+    if (form.name.trim().length < 2) {
+      newErrors.name = "이름을 정확히 입력해주세요.";
+    }
+
+    if (!/^010-\d{4}-\d{4}$/.test(form.phone)) {
+      newErrors.phone = "전화번호 형식은 010-1234-5678 입니다.";
+    }
+
+    if (!form.pharmacyName.trim()) {
+      newErrors.pharmacyName = "약국명을 입력해주세요.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("보내는 데이터:", form);
+    if (!validate()) return;
 
     try {
       await registerUser(form);
@@ -39,72 +69,76 @@ export default function UserRegister() {
         <h2 className="register-text">회원가입</h2>
 
         <form className="register-form" onSubmit={onSubmit}>
-          <input
-            type="email"
-            name="username"
-            className="register-input"
-            placeholder="아이디(이메일)"
-            value={form.username}
-            onChange={onChange}
-            required
-          />
+          <div className="field">
+            <label>아이디 (이메일)</label>
+            <input
+              type="email"
+              name="username"
+              className="register-input"
+              placeholder="example@email.com"
+              value={form.username}
+              onChange={onChange}
+            />
+            {errors.username && <p className="error">{errors.username}</p>}
+          </div>
 
-          <input
-            type="password"
-            name="password"
-            className="register-input"
-            placeholder="비밀번호"
-            value={form.password}
-            onChange={onChange}
-            required
-          />
+          <div className="field">
+            <label>비밀번호</label>
+            <input
+              type="password"
+              name="password"
+              className="register-input"
+              placeholder="8자 이상 입력"
+              value={form.password}
+              onChange={onChange}
+            />
+            {errors.password && <p className="error">{errors.password}</p>}
+          </div>
 
-          <input
-            type="text"
-            name="name"
-            className="register-input"
-            placeholder="이름"
-            value={form.name}
-            onChange={onChange}
-            required
-          />
+          <div className="field">
+            <label>이름</label>
+            <input
+              type="text"
+              name="name"
+              className="register-input"
+              placeholder="이름"
+              value={form.name}
+              onChange={onChange}
+            />
+            {errors.name && <p className="error">{errors.name}</p>}
+          </div>
 
-          {/* ⭐ 전화번호 입력 */}
-          <input
-            type="text"
-            name="phone"
-            className="register-input"
-            placeholder="전화번호 (예: 010-1234-5678)"
-            value={form.phone}
-            onChange={onChange}
-            required
-          />
+          <div className="field">
+            <label>전화번호</label>
+            <input
+              type="text"
+              name="phone"
+              className="register-input"
+              placeholder="010-1234-5678"
+              value={form.phone}
+              onChange={onChange}
+            />
+            {errors.phone && <p className="error">{errors.phone}</p>}
+          </div>
 
-          {/* ⭐ 약국명 입력 */}
-          <input
-            type="text"
-            name="pharmacyName"
-            className="register-input"
-            placeholder="약국명"
-            value={form.pharmacyName}
-            onChange={onChange}
-            required
-          />
+          <div className="field">
+            <label>약국명</label>
+            <input
+              type="text"
+              name="pharmacyName"
+              className="register-input"
+              placeholder="약국명을 입력하세요"
+              value={form.pharmacyName}
+              onChange={onChange}
+            />
+            {errors.pharmacyName && (
+              <p className="error">{errors.pharmacyName}</p>
+            )}
+          </div>
 
           <button type="submit" className="register-button">
             회원가입
           </button>
-
-          <div className="register-footer">
-            이미 계정이 있으신가요?
-            <button
-              type="button"
-              className="register-footer-btn"
-              onClick={() => navigate("/login")}
-            >
-              로그인
-            </button>
-          </div>
         </form>
       </div>
     </div>

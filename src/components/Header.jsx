@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import "../styles/Header.css";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -13,39 +14,35 @@ export default function Header() {
   };
 
   return (
-    <header style={{ 
-      padding: "10px", 
-      background: "#f1f1f1",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center"
-    }}>
-      
-      {/* 🏠 홈 아이콘 → 클릭 시 "/" 이동 */}
-      <Link to="/">
-        <img 
-          src="/home.png"   // ⭐ public/home.png 사용법
-          alt="home"
-          style={{ width: "40px", cursor: "pointer" }}
-        />
-      </Link>
+    <header className="header">
+      {/* 왼쪽: 로고 + 홈 */}
+      <div className="header-left">
+        <Link to="/" className="logo">
+          🏥 PharmTrack
+        </Link>
+      </div>
 
-      <div>
+      {/* 오른쪽: 유저 영역 */}
+      <div className="header-right">
         {user ? (
           <>
-            <span>{user.name}님</span>
-            <button 
-              onClick={logout} 
-              style={{ marginLeft: "10px", cursor: "pointer" }}
+            <span className="user-name">{user.name}님</span>
+
+            <button
+              className="header-btn"
+              onClick={() => navigate("/user/update")}
             >
+              회원정보
+            </button>
+
+            <button className="header-btn logout" onClick={logout}>
               로그아웃
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">login</Link>
-            {" | "}
-            <Link to="/register">signup</Link>
+            <Link to="/login" className="header-link">Login</Link>
+            <Link to="/register" className="header-link">Sign up</Link>
           </>
         )}
       </div>

@@ -10,6 +10,9 @@ import MedicineForm from '../pages/medicine/MedicineForm';
 import MedicineEdit from "../pages/medicine/MedicineEdit";
 import MedicineDelete from '../pages/medicine/MedicineDelete';
 
+// 🌟 유통기한 임박 목록 페이지 임포트
+import MedicineExpiringList from '../pages/medicine/MedicineExpiringList';
+
 //판매관리 페이지들 임포트
 import SaleMenu from "../pages/sale/SaleMenu";
 import SaleCreate from "../pages/sale/SaleCreate";
@@ -22,11 +25,11 @@ import InventoryList from "../pages/inventory/InventoryList";
 // 사용자 인증 페이지 임포트
 import UserRegister from "../pages/auth/UserRegister";
 import UserLogin from "../pages/auth/UserLogin";
+import UserUpdate from "../pages/auth/UserUpdate";
 
 import ProtectedRoute from "../components/ProtectedRoute"; // ⭐ 추가
 
-
-
+// import SearchPanel from '../components/SearchPanel';
 
 export default function Router() {
   return (
@@ -80,6 +83,16 @@ export default function Router() {
         }
       />
 
+      {/* 🌟 유통기한 임박 목록 라우트 추가 */}
+      <Route
+        path="/medicine/expiring-list"
+        element={
+          <ProtectedRoute>
+            <MedicineExpiringList />
+          </ProtectedRoute>
+      }
+      />
+
       <Route
         path="/medicine/list"
         element={
@@ -126,8 +139,7 @@ export default function Router() {
       {/* 인증 (로그인 필요 없음) */}
       <Route path="/register" element={<UserRegister />} />
       <Route path="/login" element={<UserLogin />} />
-
-    
+      <Route path="/user/update" element={<UserUpdate />} />
 
     </Routes>
 

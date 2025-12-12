@@ -17,6 +17,13 @@ export const getMedicineList = async () => {
   return await API.get('/api/medicines');
 };
 
+// 🌟 추가할 함수: 유통기한 임박 약 목록 조회
+export const getExpiringSoon = async () => {
+  // 백엔드 컨트롤러에서 이 경로를 처리해야 합니다.
+  // 예시: GET /api/medicines/expiring-soon
+  return await API.get('/api/medicines/expiring-soon');
+};
+
 // 약품 수정
 export const updateMedicine = async (id, medicine) => {
   return await API.put(`/api/medicines/${id}`, medicine);

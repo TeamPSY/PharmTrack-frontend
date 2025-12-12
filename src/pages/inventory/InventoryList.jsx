@@ -1,33 +1,43 @@
+// ...existing code...
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getMedicineList, updateMedicine } from "../../api/medicineApi";
 import "../../styles/MedicineInventory.css";
+import { useExpiringCount } from "../../hooks/useNotification";
 
 export default function InventoryList() {
   const [list, setList] = useState([]);
   const [sortedList, setSortedList] = useState([]);
   const [sortType, setSortType] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // ⭐ 한 페이지당 10개 표시
-
+  const itemsPerPage = 10;
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();
+
+  const { expiringCount, loading } = useExpiringCount();
 
   useEffect(() => {
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const load = async () => {
-    const res = await getMedicineList();
-    setList(res.data);
-    setSortedList(res.data);
+    try {
+      const res = await getMedicineList();
+      const data = res.data || [];
+      setList(data);
+      setSortedList(data);
+    } catch (err) {
+      console.error(err);
+      setMessage("데이터 로드 실패");
+      setTimeout(() => setMessage(null), 2000);
+    }
   };
 
   const changeStock = (id, value) => {
-    setSortedList((prev) =>
-      prev.map((m) =>
-        m.medicineId === id ? { ...m, stock: Number(value) } : m
-      )
-    );
+    const num = Number(value);
+    setList((prev) => prev.map((m) => (m.medicineId === id ? { ...m, stock: num } : m)));
+    setSortedList((prev) => prev.map((m) => (m.medicineId === id ? { ...m, stock: num } : m)));
   };
 
   const saveStock = async (item) => {
@@ -43,57 +53,79 @@ export default function InventoryList() {
     }
   };
 
-  // ⭐ 정렬
   const handleSort = (type) => {
     setSortType(type);
     let sorted = [...list];
-
-    if (type === "stockHigh") {
-      sorted.sort((a, b) => b.stock - a.stock);
-    } else if (type === "stockLow") {
-      sorted.sort((a, b) => a.stock - b.stock);
-    } else if (type === "nameAsc") {
-      sorted.sort((a, b) => a.name.localeCompare(b.name, "ko"));
-    } else if (type === "recent") {
-      sorted.sort((a, b) => b.medicineId - a.medicineId);
-    }
-
+    if (type === "stockHigh") sorted.sort((a, b) => b.stock - a.stock);
+    else if (type === "stockLow") sorted.sort((a, b) => a.stock - b.stock);
+    else if (type === "nameAsc") sorted.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+    else if (type === "recent") sorted.sort((a, b) => b.medicineId - a.medicineId);
     setSortedList(sorted);
     setCurrentPage(1);
   };
 
-  // ⭐ 페이지 계산
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = sortedList.slice(indexOfFirst, indexOfLast);
-
-  const totalPages = Math.ceil(sortedList.length / itemsPerPage);
-
-  // ⭐ 재고 부족 리스트 (ex: 50 이하)
+  const totalPages = Math.max(1, Math.ceil(sortedList.length / itemsPerPage));
   const lowStockList = sortedList.filter((m) => m.stock <= 50);
+
+  const handleCheckExpiration = () => {
+    navigate("/medicine/expiring-list");
+  };
 
   return (
     <div className="inventory-layout">
-
-      {/* LEFT - 재고 관리 */}
       <div className="inventory-left">
         <div className="inventory-card">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <h2 className="title-green">재고 관리</h2>
 
-          <h2 className="title-green">재고 관리</h2>
+            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <div>
+                <button className="sort-btn" onClick={() => handleSort("stockHigh")}>재고 많은 순</button>
+                <button className="sort-btn" onClick={() => handleSort("stockLow")}>재고 적은 순</button>
+                <button className="sort-btn" onClick={() => handleSort("nameAsc")}>이름순</button>
+                <button className="sort-btn" onClick={() => handleSort("recent")}>최근 등록순</button>
+              </div>
 
-          {/* 정렬 버튼 */}
-          <div className="inventory-sort-box">
-            <button className="sort-btn" onClick={() => handleSort("stockHigh")}>재고 많은 순</button>
-            <button className="sort-btn" onClick={() => handleSort("stockLow")}>재고 적은 순</button>
-            <button className="sort-btn" onClick={() => handleSort("nameAsc")}>이름순</button>
-            <button className="sort-btn" onClick={() => handleSort("recent")}>최근 등록순</button>
+              <button
+                onClick={handleCheckExpiration}
+                style={{
+                  padding: "8px 12px",
+                  backgroundColor: "#ffc107",
+                  border: "none",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  position: "relative",
+                  fontWeight: "600"
+                }}
+              >
+                유통기한 체크
+                {!loading && expiringCount > 0 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-6px",
+                      right: "-8px",
+                      background: "red",
+                      color: "#fff",
+                      borderRadius: "50%",
+                      padding: "2px 6px",
+                      fontSize: 12,
+                      fontWeight: 700
+                    }}
+                  >
+                    {expiringCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* 메시지 */}
-          {message && <div className="message-box">{message}</div>}
+          {message && <div className="message-box" style={{ marginTop: 12 }}>{message}</div>}
 
-          {/* 테이블 */}
-          <div className="inventory-card overflow-auto">
+          <div className="inventory-card overflow-auto" style={{ marginTop: 12 }}>
             <table className="inventory-table w-full">
               <thead>
                 <tr>
@@ -104,25 +136,15 @@ export default function InventoryList() {
                   <th>수정</th>
                 </tr>
               </thead>
-
               <tbody>
                 {currentItems.map((m) => (
                   <tr key={m.medicineId}>
                     <td>{m.name}</td>
                     <td>{m.stock}</td>
-
                     <td>
-                      <button
-                        className="btn-icon btn-sell"
-                        onClick={() => changeStock(m.medicineId, m.stock + 1)}
-                      >+1</button>
-
-                      <button
-                        className="btn-icon btn-delete"
-                        onClick={() => changeStock(m.medicineId, m.stock - 1)}
-                      >-1</button>
+                      <button className="btn-icon btn-sell" onClick={() => changeStock(m.medicineId, m.stock + 1)}>+1</button>
+                      <button className="btn-icon btn-delete" onClick={() => changeStock(m.medicineId, m.stock - 1)}>-1</button>
                     </td>
-
                     <td>
                       <input
                         type="number"
@@ -131,7 +153,6 @@ export default function InventoryList() {
                         className="stock-input"
                       />
                     </td>
-
                     <td>
                       <button className="btn-green" onClick={() => saveStock(m)}>저장하기</button>
                     </td>
@@ -141,27 +162,24 @@ export default function InventoryList() {
             </table>
           </div>
 
-          {/* ⭐ 페이지네이션 */}
-          <div className="pagination">
+          <div className="pagination" style={{ marginTop: 12 }}>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
                 className={`page-btn ${currentPage === num ? "active" : ""}`}
                 onClick={() => setCurrentPage(num)}
+                style={{ marginRight: 6 }}
               >
                 {num}
               </button>
             ))}
           </div>
-
         </div>
       </div>
 
-      {/* RIGHT - 재고 부족 알림 */}
       <div className="inventory-right">
         <div className="alert-card">
           <h3 className="alert-title">⚠ 재고 부족 알림</h3>
-
           {lowStockList.length === 0 ? (
             <p className="no-alert">모든 약품의 재고가 충분합니다 🎉</p>
           ) : (
@@ -177,7 +195,7 @@ export default function InventoryList() {
           )}
         </div>
       </div>
-
     </div>
   );
 }
+// ...existing code...
