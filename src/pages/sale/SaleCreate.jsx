@@ -59,25 +59,26 @@ export default function SaleCreate() {
     }
   };
 
-  /* 총 금액 */
+  /* 총 금액 (화면 표시용) */
   const totalPrice = cart.reduce(
     (sum, item) => sum + Number(item.price) * item.qty,
     0
   );
 
-  /* ✅ 판매 등록 → 영수증 이동 */
+  /* ✅ 판매 등록 */
   const submitSale = async () => {
     if (cart.length === 0) {
       alert("선택된 상품이 없습니다.");
       return;
     }
 
+    // ✅ 백엔드 SaleDto 구조에 맞춘 payload
     const payload = {
-      totalPrice: totalPrice,
-      saleItems: cart.map((item) => ({
+      userId: 1, // TODO: 로그인 연동 시 실제 userId로 교체
+      items: cart.map((item) => ({
         medicineId: item.medicineId,
         quantity: item.qty,
-        price: item.price,
+        unitPrice: item.price,
       })),
     };
 
@@ -85,7 +86,7 @@ export default function SaleCreate() {
 
     try {
       const res = await createSale(payload);
-      const saleId = res.data.saleId;
+      const saleId = res.data;
 
       navigate(`/sale/detail/${saleId}`);
     } catch (e) {
