@@ -7,7 +7,6 @@ import Home from "../pages/Home";
 import MedicineMenu from '../pages/medicine/MedicineMenu';
 import MedicineList from '../pages/medicine/MedicineList';
 import MedicineForm from '../pages/medicine/MedicineForm';
-import MedicineEdit from "../pages/medicine/MedicineEdit";
 import MedicineDelete from '../pages/medicine/MedicineDelete';
 import MedicineExpiringList from '../pages/medicine/MedicineExpiringList';
 
@@ -55,7 +54,6 @@ export default function Router() {
       <Route path="/medicine" element={<ProtectedRoute><MedicineMenu /></ProtectedRoute>} />
       <Route path="/medicine/list" element={<ProtectedRoute><MedicineList /></ProtectedRoute>} />
       <Route path="/medicine/add" element={<ProtectedRoute><MedicineForm /></ProtectedRoute>} />
-      <Route path="/medicines/edit/:id" element={<ProtectedRoute><MedicineEdit /></ProtectedRoute>} />
       <Route path="/medicine/delete" element={<ProtectedRoute><MedicineDelete /></ProtectedRoute>} />
       <Route path="/medicine/expiring-list" element={<ProtectedRoute><MedicineExpiringList /></ProtectedRoute>} />
 

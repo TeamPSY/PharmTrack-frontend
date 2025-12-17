@@ -1,47 +1,130 @@
+/* =========================
+   전체 컨테이너
+========================= */
 .sale-container {
-  padding: 50px;
+  padding: 60px 20px;
   font-family: "Pretendard", sans-serif;
+  background: #ffffff;          /* ✅ 배경 흰색 */
+  min-height: 100vh;
+
+  display: flex;                /* ⭐ 가운데 정렬 */
+  flex-direction: column;
+  align-items: center;
 }
 
+/* 타이틀 */
 .sale-title {
-  font-size: 26px;
-  font-weight: 700;
-  color: #2e7d32;
-  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1f6a2b;
+  margin-bottom: 40px;
 }
 
-/* 카드 레이아웃 */
+/* =========================
+   세로 메뉴 래퍼 (가운데)
+========================= */
 .menu-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  width: 100%;
+  max-width: 560px;             /* ⭐ 카드 전체 폭 */
+  display: flex;
+  flex-direction: column;
+  gap: 22px;                    /* 카드 사이 여백 */
 }
 
-/* 메뉴 카드 */
+/* =========================
+   메뉴 카드 (큼직하게)
+========================= */
 .menu-card {
-  background: #e8f5e9;
-  border-radius: 20px;
-  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #e5eee5;
+  border-radius: 22px;
+  padding: 28px 32px;           /* ⭐ 카드 크기 키움 */
   text-decoration: none;
 
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
+  gap: 22px;
 
-  box-shadow: 0 8px 20px rgba(120, 200, 150, 0.18);
-  transition: 0.25s;
+  box-shadow: 0 12px 28px rgba(30, 70, 40, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+/* hover */
 .menu-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 28px rgba(120, 200, 150, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(30, 70, 40, 0.14);
+  border-color: #cfe6cf;
 }
 
-/* 아이콘 */
+/* =========================
+   아이콘
+========================= */
 .menu-icon {
-  font-size: 42px;
-  margin-bottom: 15px;
+  width: 56px;                  /* ⭐ 더 큼 */
+  height: 56px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+  flex-shrink: 0;
+
+  background: #eaf6ea;
+  border: 1px solid #d6ead6;
 }
 
-/* 제목 */
+/* =========================
+   텍스트 영역
+========================= */
+.menu-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 메뉴 제목 */
+.menu-label {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1e3b23;
+}
+
+/* 메뉴 설명 */
+.menu-desc {
+  font-size: 14px;
+  color: #6b7f6f;
+}
+
+/* =========================
+   오른쪽 화살표
+========================= */
+.menu-arrow {
+  margin-left: auto;
+  font-size: 22px;
+  color: #9ab3a0;
+  transition: transform 0.2s ease;
+}
+
+.menu-card:hover .menu-arrow {
+  transform: translateX(4px);
+}
+
+/* =========================
+   반응형
+========================= */
+@media (max-width: 768px) {
+  .menu-wrapper {
+    max-width: 100%;
+  }
+
+  .menu-card {
+    padding: 24px 20px;
+  }
+
+  .menu-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+}

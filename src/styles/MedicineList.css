@@ -1,181 +1,321 @@
 /* =========================
    전체 페이지
 ========================= */
-
 .medicine-page {
+  padding: 30px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 30px 40px;
   box-sizing: border-box;
 }
 
-/* 페이지 타이틀 */
+/* 타이틀 */
 .page-title {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
   color: #2e7d32;
-  margin-bottom: 25px;
+  margin-bottom: 26px;
 }
 
 /* =========================
-   좌 / 우 레이아웃 (겹침 해결 핵심)
+   레이아웃
 ========================= */
-
 .medicine-layout {
   display: flex;
-  gap: 30px;
+  gap: 32px;
   align-items: flex-start;
-  flex-wrap: wrap;        /* ⭐ 화면 작아지면 아래로 */
-}
-
-/* 왼쪽 검색 패널 */
-.left-panel {
-  width: 360px;           /* ⭐ 고정 폭 */
-  flex-shrink: 0;         /* ⭐ 절대 눌리지 않음 */
-}
-
-/* 오른쪽 결과 영역 */
-.right-panel {
-  width: 900px;           /* ⭐ flex 제거 */
-  max-width: 100%;        /* ⭐ 작은 화면 대응 */
-
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(100, 160, 120, 0.12);
 }
 
 /* =========================
-   정렬 영역
+   왼쪽 검색 패널
 ========================= */
+.search-panel {
+  flex: 0 0 320px;
+  background: #ffffff;
+  padding: 32px 26px 36px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
 
-.sort-area {
+/* 제목 */
+.search-panel h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 22px;
+}
+
+/* =========================
+   검색 영역
+========================= */
+.search-input-wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
-.sort-label {
-  font-weight: 600;
-  color: #2e7d32;
+/* 검색 아이콘 */
+.search-icon {
+  font-size: 16px;
+  opacity: 0.6;
 }
 
-.sort-select {
-  padding: 8px 14px;
-  border-radius: 12px;
-  border: 1px solid #cdeac0;
-  background-color: #e9f7df;
-  font-weight: 600;
-  color: #2e7d32;
+/* 검색 input */
+.search-input-wrapper input {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1.5px solid #b7ddb1;
+  font-size: 15px;
+  background: #fff;
+  transition: 0.2s ease;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #aaa;
+}
+
+.search-input-wrapper input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76,175,80,0.18);
+}
+
+/* 검색 X 버튼 */
+.clear-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #e6e6e6;
+  color: #555;
+  font-weight: 700;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn:hover {
+  background: #d5d5d5;
+}
+
+/* =========================
+   구분선
+========================= */
+.search-panel::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #e8f3e5;
+  margin: 18px 0 22px;
+}
+
+/* =========================
+   초성 영역
+========================= */
+.initial-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  justify-items: center;
+}
+
+/* 초성 타이틀 */
+.initial-grid::before {
+  content: "초성으로 빠르게 찾기";
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6aa96f;
+  margin-bottom: 6px;
+}
+
+/* 초성 버튼 */
+.initial-grid button {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid #c8e6c9;
+  background: #f4fbf2;
+  color: #2e7d32;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.initial-grid button:hover {
+  background: #c9efc1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(76,175,80,0.25);
+}
+
+/* 초성 active */
+.initial-grid button.active {
+  background: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}
+
+.initial-grid .initial-clear-btn {
+  color: #888;
+}
+
+/* 초성 초기화 X */
+.initial-clear-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px dashed #cfcfcf;
+  background: #f5f5f5;
+  color: #888;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.initial-clear-btn:hover {
+  background: #e0e0e0;
+  color: #000;
+}
+
+/* =========================
+   오른쪽 결과 영역
+========================= */
+.result-area {
+  flex: 1;
+  background: #ffffff;
+  padding: 26px;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+/* 상태 텍스트 */
+.status-text {
+  text-align: center;
+  color: #777;
+  font-size: 15px;
+  padding: 40px 0;
+}
+
+.error-text {
+  text-align: center;
+  color: #d32f2f;
+  font-size: 15px;
+  padding: 40px 0;
+}
+
+/* =========================
+   결과 개수
+========================= */
+.result-count {
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4caf50;
 }
 
 /* =========================
    테이블
 ========================= */
-
 .medicine-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.medicine-table th {
-  background: #eef7f0;
-  color: #2e7d32;
-  padding: 14px;
   font-size: 15px;
 }
 
-.medicine-table td {
-  padding: 14px;
+/* 헤더 */
+.medicine-table thead th {
+  background: #d4f0c4;
+  color: #2e7d32;
+  padding: 14px 10px;
+  font-weight: 700;
+  border-bottom: 2px solid #b7ddb1;
+}
+
+/* 바디 */
+.medicine-table tbody td {
+  padding: 14px 10px;
+  border-bottom: 1px solid #eee;
   text-align: center;
-  border-bottom: 1px solid #e5efe8;
+  color: #333;
 }
 
-.medicine-table tr:hover {
-  background: #f7fbf9;
-}
-
-.medicine-name,
-.bold {
+.medicine-name {
   font-weight: 600;
+  color: #2e7d32;
+}
+
+.medicine-table tbody tr:hover {
+  background: #f6fff2;
 }
 
 /* =========================
    수정 버튼
 ========================= */
-
 .edit-btn {
-  padding: 6px 14px;
-  background: #66bb6a;
-  color: #ffffff;
+  padding: 8px 14px;
+  background: #4caf50;
+  color: #fff;
   border: none;
-  border-radius: 20px;
-  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .edit-btn:hover {
-  background: #4caf50;
+  background: #3d8c42;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(76,175,80,0.3);
 }
 
 /* =========================
    페이지네이션
 ========================= */
-
 .pagination {
+  margin-top: 26px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 25px;
-  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .page-btn {
-  min-width: 36px;
-  height: 36px;
-  padding: 6px 12px;
-
-  border-radius: 10px;
-  border: 1px solid #cdeac0;
-  background-color: #e9f7df;
-
-  font-size: 14px;
-  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #b7ddb1;
+  background: #e6f5e1;
   color: #2e7d32;
-
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.page-btn:hover:not(:disabled) {
-  background-color: #66bb6a;
-  color: #ffffff;
+.page-btn:hover {
+  background: #c9efc1;
 }
 
 .page-btn.active {
-  background-color: #2e7d32;
-  color: #ffffff;
-  border-color: #2e7d32;
-}
-
-.page-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+  background: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
 }
 
 /* =========================
-   상태 / 에러
+   반응형
 ========================= */
+@media (max-width: 1024px) {
+  .medicine-layout {
+    flex-direction: column;
+  }
 
-.status-text {
-  text-align: center;
-  color: #666;
-}
+  .search-panel {
+    width: 100%;
+  }
 
-.error-text {
-  color: #d32f2f;
-  font-weight: 600;
+  .initial-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
 }

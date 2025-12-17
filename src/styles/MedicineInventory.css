@@ -251,3 +251,27 @@
 .inventory-right {
   flex: 1.2;
 }
+
+/* LOT 버튼 (초록색) */
+.btn-gray {
+  padding: 8px 14px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+/* 이력보기 버튼 (초록색) */
+.btn-history {
+  padding: 8px 14px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}

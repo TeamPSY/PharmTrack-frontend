@@ -24,6 +24,7 @@ export default function SaleDetail() {
           <p>판매 상세 정보</p>
         </div>
 
+        {/* 판매 정보 */}
         <div className="receipt-info">
           <p>🧾 판매 ID: <b>{sale.saleId}</b></p>
           <p>💰 총 금액: <b>{sale.totalPrice.toLocaleString()}원</b></p>
@@ -32,7 +33,7 @@ export default function SaleDetail() {
 
         <div className="receipt-divider" />
 
-        {/* 리스트 */}
+        {/* 판매 상품 리스트 */}
         <table className="receipt-table">
           <thead>
             <tr>
@@ -51,9 +52,16 @@ export default function SaleDetail() {
                 <td>{i.subtotalPrice.toLocaleString()}</td>
               </tr>
             ))}
+
+            {/* 총 합계 */}
+            <tr className="receipt-total-row">
+              <td colSpan="3">총 합계</td>
+              <td>{sale.totalPrice.toLocaleString()}원</td>
+            </tr>
           </tbody>
         </table>
 
+        {/* 하단 버튼 */}
         <div className="receipt-footer">
           <button className="close-btn" onClick={() => navigate(-1)}>
             닫기
@@ -64,9 +72,8 @@ export default function SaleDetail() {
           >
             새 판매 등록
           </button>
-
-          
         </div>
+
       </div>
     </div>
   );

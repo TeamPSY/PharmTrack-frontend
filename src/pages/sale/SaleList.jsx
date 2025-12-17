@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { getSaleList } from "../../api/saleApi";
 import { useNavigate } from "react-router-dom";
-import "./SaleList.css";
+import "../../styles/SaleList.css";
 
 export default function SaleList() {
   const [sales, setSales] = useState([]);

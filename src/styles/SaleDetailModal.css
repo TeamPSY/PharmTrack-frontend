@@ -105,11 +105,22 @@
 }
 
 .new-sale-btn {
-  background: #6eaaff;
+  background: #66bb6a;
   color: #fff;
 }
 
 .new-sale-btn:hover {
-  background: #5598ff;
+  background: #66bb6a;
 }
 
+/* 총 합계 행 */
+.receipt-total-row td {
+  font-weight: 700;
+  border-top: 2px solid #ccc;
+  padding-top: 12px;
+  background-color: #faf7ef;
+}
+
+.receipt-total-row td:last-child {
+  color: #2e7d32;
+}

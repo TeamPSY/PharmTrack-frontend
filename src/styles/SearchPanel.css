@@ -1,83 +1,124 @@
+/* =========================
+   검색 패널 카드
+========================= */
 .search-panel {
   background: #ffffff;
-  padding: 22px;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(100, 160, 120, 0.12);
+  padding: 32px 26px 38px;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 제목 */
 .search-panel h3 {
   font-size: 18px;
   font-weight: 700;
   color: #2e7d32;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 
-/* 검색창 */
+/* =========================
+   검색 입력 영역
+========================= */
 .search-input-wrapper {
   position: relative;
-  margin-bottom: 18px;
+  margin-bottom: 32px;
 }
 
+/* 🔍 아이콘 (진짜 요소용) */
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* 검색 input */
 .search-input-wrapper input {
   width: 100%;
-  padding: 14px 44px 14px 16px;
-  border-radius: 12px;
-  border: 1.5px solid #bfe5c8;
+  padding: 14px 44px 14px 44px;
+  border-radius: 14px;
+  border: 1.5px solid #b7ddb1;
   font-size: 15px;
+  background: #ffffff;
+  transition: 0.2s ease;
+  box-sizing: border-box;
 }
 
 .search-input-wrapper input:focus {
   outline: none;
-  border-color: #66bb6a;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.18);
 }
 
-/* ❌ 버튼 */
+/* ❌ X 버튼 */
 .clear-btn {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  background: #e0f2e9;
-  color: #2e7d32;
+  background: #f0f0f0;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn:hover {
+  background: #dcdcdc;
+}
+
+/* =========================
+   초성 영역
+========================= */
+.initial-grid {
+  margin-top: auto;               /* ⭐ 아래로 밀기 */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
 }
 
 /* 초성 버튼 */
-.initial-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-}
-
 .initial-grid button {
-  padding: 10px 0;
-  border-radius: 12px;
-  border: none;
-  background: #eaf4ec;
-  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 14px;
+  border: 1px solid #c8e6c9;
+  background-color: #f4fbf2;
+  color: #2e7d32;
+  font-weight: 700;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .initial-grid button:hover {
-  background: #c8e6c9;
+  background-color: #c9efc1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.25);
 }
 
-.search-input-wrapper {
-  position: relative;
+.initial-grid button:active {
+  transform: scale(0.95);
 }
 
-.clear-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  font-size: 16px;
-  cursor: pointer;
-  color: #888;
+/* =========================
+   반응형
+========================= */
+@media (max-width: 1024px) {
+  .initial-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
 }

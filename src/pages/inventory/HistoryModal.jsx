@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getHistoryByMedicine } from "../../api/historyApi";
+import "../../styles/HistoryModal.css";
 
 export default function HistoryModal({ medicineId, onClose }) {
   const [list, setList] = useState([]);
@@ -8,7 +9,7 @@ export default function HistoryModal({ medicineId, onClose }) {
     if (!medicineId) return;
 
     getHistoryByMedicine(medicineId)
-      .then((res) => setList(res.data))
+      .then((res) => setList(res.data || []))
       .catch((e) => {
         console.error("재고 이력 조회 실패", e);
         setList([]);
@@ -16,31 +17,14 @@ export default function HistoryModal({ medicineId, onClose }) {
   }, [medicineId]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        background: "rgba(0,0,0,0.4)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999
-      }}
-    >
+    <div className="history-overlay" onClick={onClose}>
       <div
-        style={{
-          background: "white",
-          padding: "20px",
-          width: "600px",
-          borderRadius: "8px"
-        }}
+        className="history-modal"
+        onClick={(e) => e.stopPropagation()}
       >
-        <h3>변경 이력</h3>
+        <h3 className="history-title">변경 이력</h3>
 
-        <table border="1" cellPadding="8" width="100%">
+        <table className="history-table">
           <thead>
             <tr>
               <th>날짜</th>
@@ -52,30 +36,40 @@ export default function HistoryModal({ medicineId, onClose }) {
             </tr>
           </thead>
           <tbody>
-  {list.length === 0 ? (
-    <tr>
-      <td colSpan="6">이력이 없습니다.</td>
-    </tr>
-  ) : (
-    list.map(h => (
-      <tr key={h.historyId}>
-        <td>{h.createdAt}</td>
-        <td>{h.changeType}</td>
-        <td>{h.amount}</td>
-        <td>{h.beforeStock}</td>
-        <td>{h.afterStock}</td>
-        <td>{h.reason}</td>
-      </tr>
-    ))
-  )}
-</tbody>
-
-
+            {list.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="history-empty">
+                  이력이 없습니다.
+                </td>
+              </tr>
+            ) : (
+              list.map((h) => (
+                <tr key={h.historyId}>
+                  <td>{h.createdAt}</td>
+                  <td
+                    className={
+                      h.changeType === "IN"
+                        ? "history-in"
+                        : "history-out"
+                    }
+                  >
+                    {h.changeType}
+                  </td>
+                  <td>{h.amount}</td>
+                  <td>{h.beforeStock}</td>
+                  <td>{h.afterStock}</td>
+                  <td>{h.reason}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
         </table>
 
-        <button onClick={onClose} style={{ marginTop: "10px" }}>
-          닫기
-        </button>
+        <div className="history-footer">
+          <button className="btn-close" onClick={onClose}>
+            닫기
+          </button>
+        </div>
       </div>
     </div>
   );

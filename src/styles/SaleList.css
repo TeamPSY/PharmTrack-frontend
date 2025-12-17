@@ -1,63 +1,212 @@
+/* =========================
+   전체 컨테이너
+========================= */
 .sale-container {
-  padding: 30px;
-  max-width: 900px;
-  margin: auto;
-  font-family: "Pretendard", sans-serif;
+  padding: 36px 48px;
+  max-width: 1440px;
+  margin: 0 auto;
+  background: #f5f7f6;
+  box-sizing: border-box;
+  min-height: 100vh;
 }
 
-.sale-title {
-  font-size: 26px;
+/* =========================
+   헤더
+========================= */
+.sale-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  font-size: 15px;
   font-weight: 700;
-  color: #2b4b72;
-  margin-bottom: 20px;
+  color: #2e7d32;
+  cursor: pointer;
+  padding: 6px 8px;
 }
 
-.sale-table-wrapper {
-  overflow-x: auto;
+.back-btn::before {
+  content: "←";
+  margin-right: 6px;
+}
+
+.sale-header h2 {
+  margin-left: 16px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f6a2b;
+}
+
+/* =========================
+   메인 레이아웃
+========================= */
+.sale-content {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* =========================
+   왼쪽: 판매 내역
+========================= */
+.sale-today-box {
   background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 80, 160, 0.1);
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #e3e7e4;
 }
 
-.sale-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 16px;
+.sale-today-box h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1f6a2b;
+  margin-bottom: 16px;
 }
 
-.sale-table thead {
-  background: #e8f1ff;
+.sale-today-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.sale-table th {
-  padding: 12px;
-  color: #2b4b72;
+/* 판매 리스트 아이템 */
+.sale-today-box li {
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #fafcfa;
+  border: 1px solid #e6ece7;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 14px;
   font-weight: 600;
-  border-bottom: 2px solid #c5d9f5;
+  color: #333;
 }
 
-.sale-table td {
-  padding: 12px;
-  text-align: center;
-  border-bottom: 1px solid #e1e7f3;
+.sale-today-box li:last-child {
+  margin-bottom: 0;
 }
 
-.detail-btn {
-  padding: 6px 14px;
-  background: #6eaaff;
-  color: white;
+.sale-today-box li span:last-child {
+  font-weight: 800;
+  color: #2e7d32;
+}
+
+/* =========================
+   오른쪽: 기간 선택 / 달력
+========================= */
+.sale-period-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 기간 필터 */
+.date-filter {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #e3e7e4;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-input {
+  width: 135px;
+  padding: 10px 12px;
   border-radius: 8px;
-  text-decoration: none;
-  transition: 0.2s;
+  border: 1.5px solid #cfe6cf;
+  font-size: 14px;
 }
 
-.detail-btn:hover {
-  background: #5598ff;
+.wave {
+  font-weight: 700;
+  color: #2e7d32;
 }
 
-.sale-table tbody tr:hover {
-  background: #f0f7ff;
-  transition: 0.2s;
+.filter-btn {
+  margin-left: auto;
+  background: #2e7d32;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.15s ease;
 }
 
+.filter-btn:hover {
+  background: #256428;
+}
+
+/* =========================
+   달력 카드
+========================= */
+.calendar-real {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid #e3e7e4;
+}
+
+/* react-datepicker */
+.react-datepicker {
+  border: none;
+}
+
+.react-datepicker__header {
+  background: #eef6ee;
+  border-bottom: none;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border-radius: 50%;
+}
+
+/* =========================
+   총 수입 KPI
+========================= */
+.total-income-box {
+  margin: 40px auto 0;
+  max-width: 420px;
+
+  background: linear-gradient(135deg, #2e7d32, #4caf50);
+  color: #ffffff;
+
+  padding: 26px;
+  border-radius: 18px;
+
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+
+  box-shadow: 0 14px 36px rgba(46, 125, 50, 0.35);
+}
+
+/* =========================
+   반응형
+========================= */
+@media (max-width: 1024px) {
+  .sale-content {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+}
