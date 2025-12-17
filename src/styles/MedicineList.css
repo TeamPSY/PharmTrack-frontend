@@ -18,28 +18,26 @@
 }
 
 /* =========================
-   좌 / 우 레이아웃
+   좌 / 우 레이아웃 (겹침 해결 핵심)
 ========================= */
 
 .medicine-layout {
   display: flex;
   gap: 30px;
   align-items: flex-start;
-
-  justify-content: center;   /* ⭐ 핵심 1: 전체 묶음 중앙 */
-  flex-wrap: wrap;   /* ⭐ 핵심: 겹치지 말고 줄바꿈 */
+  flex-wrap: wrap;        /* ⭐ 화면 작아지면 아래로 */
 }
 
 /* 왼쪽 검색 패널 */
 .left-panel {
-  flex: 0 0 360px;
-  flex-shrink: 0;    /* ⭐ 눌려서 겹치는 거 방지 */
+  width: 360px;           /* ⭐ 고정 폭 */
+  flex-shrink: 0;         /* ⭐ 절대 눌리지 않음 */
 }
 
 /* 오른쪽 결과 영역 */
 .right-panel {
-  flex: 1;
-  max-width: 900px;          /* ⭐ 핵심 2: 시각적 중심 보정 */
+  width: 900px;           /* ⭐ flex 제거 */
+  max-width: 100%;        /* ⭐ 작은 화면 대응 */
 
   background: #ffffff;
   padding: 20px;
@@ -123,7 +121,7 @@
 }
 
 /* =========================
-   페이지네이션 (중복 제거)
+   페이지네이션
 ========================= */
 
 .pagination {

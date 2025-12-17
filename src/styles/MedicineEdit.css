@@ -1,0 +1,151 @@
+/* =========================
+   전체 페이지 래퍼
+========================= */
+
+.medicine-edit-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px 40px;
+
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(100, 160, 120, 0.15);
+
+  box-sizing: border-box;
+}
+
+/* 제목 */
+.medicine-edit-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* =========================
+   폼 전체
+========================= */
+
+.medicine-edit-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 24px;
+}
+
+/* 한 줄 전체 사용 */
+.form-full {
+  grid-column: span 2;
+}
+
+/* =========================
+   입력 그룹
+========================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* input / select 공통 */
+.form-group input,
+.form-group select {
+  height: 42px;
+  padding: 0 14px;
+
+  border-radius: 12px;
+  border: 1px solid #cdeac0;
+  background-color: #f6fbf7;
+
+  font-size: 14px;
+  color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #66bb6a;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.15);
+}
+
+/* =========================
+   버튼 영역
+========================= */
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* 수정 버튼 */
+.submit-btn {
+  min-width: 140px;
+  height: 44px;
+
+  border: none;
+  border-radius: 22px;
+  background-color: #2e7d32;
+
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: #1b5e20;
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+  min-width: 120px;
+  height: 44px;
+
+  border-radius: 22px;
+  border: 1px solid #cdeac0;
+  background-color: #e9f7df;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #2e7d32;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #66bb6a;
+  color: #ffffff;
+}
+
+/* =========================
+   반응형
+========================= */
+
+@media (max-width: 768px) {
+  .medicine-edit-page {
+    padding: 25px 20px;
+  }
+
+  .medicine-edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-full,
+  .form-actions {
+    grid-column: span 1;
+  }
+}

@@ -6,7 +6,11 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Router />
+
+      {/* ⭐ 이 wrapper가 핵심 */}
+      <div className="app-body">
+        <Router />
+      </div>
     </BrowserRouter>
   );
 }
