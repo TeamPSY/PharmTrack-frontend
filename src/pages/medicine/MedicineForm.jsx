@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { addMedicine } from '../../api/medicineApi';
-import { getCategoryList } from '../../api/categoryApi';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { addMedicine } from "../../api/medicineApi";
+import { getCategoryList } from "../../api/categoryApi";
+import { useNavigate } from "react-router-dom";
 
 export default function MedicineForm() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function MedicineForm() {
     price: "",
     stock: "",
     barcode: "",
-    expirationDate: ""
+    expirationDate: "",
   });
 
   // ✔ 카테고리 목록 불러오기
@@ -35,14 +35,14 @@ export default function MedicineForm() {
     try {
       await addMedicine({
         ...form,
-        categoryId: Number(form.categoryId),   // ✔ 드롭다운 선택 ID로 저장
+        categoryId: Number(form.categoryId),
         price: Number(form.price),
         stock: Number(form.stock),
-        status: "NORMAL"
+        status: "NORMAL",
       });
 
       alert("약품 등록 성공!");
-      navigate("/medicine/list");
+      navigate("/medicine/list"); // ✅ 여기만 수정
     } catch (err) {
       console.error(err);
       alert("등록 실패");
@@ -53,11 +53,17 @@ export default function MedicineForm() {
     <div style={{ padding: "30px" }}>
       <h2>약품 등록</h2>
 
-      <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", width: "300px" }}>
-
-        {/* ✔ 드롭다운으로 변경 */}
+      <form
+        onSubmit={onSubmit}
+        style={{ display: "flex", flexDirection: "column", width: "300px" }}
+      >
         <label>카테고리</label>
-        <select name="categoryId" value={form.categoryId} onChange={onChange} required>
+        <select
+          name="categoryId"
+          value={form.categoryId}
+          onChange={onChange}
+          required
+        >
           <option value="">카테고리 선택</option>
           {categories.map((c) => (
             <option key={c.categoryId} value={c.categoryId}>
@@ -67,24 +73,59 @@ export default function MedicineForm() {
         </select>
 
         <label>약품명</label>
-        <input type="text" name="name" value={form.name} onChange={onChange} required />
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={onChange}
+          required
+        />
 
         <label>제조사</label>
-        <input type="text" name="manufacturer" value={form.manufacturer} onChange={onChange} />
+        <input
+          type="text"
+          name="manufacturer"
+          value={form.manufacturer}
+          onChange={onChange}
+        />
 
         <label>가격</label>
-        <input type="number" name="price" value={form.price} onChange={onChange} required />
+        <input
+          type="number"
+          name="price"
+          value={form.price}
+          onChange={onChange}
+          required
+        />
 
         <label>재고</label>
-        <input type="number" name="stock" value={form.stock} onChange={onChange} required />
+        <input
+          type="number"
+          name="stock"
+          value={form.stock}
+          onChange={onChange}
+          required
+        />
 
         <label>바코드</label>
-        <input type="text" name="barcode" value={form.barcode} onChange={onChange} />
+        <input
+          type="text"
+          name="barcode"
+          value={form.barcode}
+          onChange={onChange}
+        />
 
         <label>유통기한</label>
-        <input type="date" name="expirationDate" value={form.expirationDate} onChange={onChange} />
+        <input
+          type="date"
+          name="expirationDate"
+          value={form.expirationDate}
+          onChange={onChange}
+        />
 
-        <button type="submit" style={{ marginTop: "20px" }}>등록</button>
+        <button type="submit" style={{ marginTop: "20px" }}>
+          등록
+        </button>
       </form>
     </div>
   );

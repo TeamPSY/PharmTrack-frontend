@@ -41,7 +41,7 @@ export default function MedicineList() {
   /* 검색 */
   const [searchText, setSearchText] = useState("");
 
-  /* ⭐ 초성 선택 상태 (2️⃣) */
+  /* 초성 */
   const [activeInitial, setActiveInitial] = useState(null);
 
   useEffect(() => {
@@ -62,10 +62,10 @@ export default function MedicineList() {
       .finally(() => setLoading(false));
   };
 
-  /* ====== 검색 ====== */
+  /* 검색 */
   const handleSearch = (text) => {
     setSearchText(text);
-    setActiveInitial(null);   // ⭐ 초성 해제
+    setActiveInitial(null);
     setCurrentPage(1);
 
     if (text.trim() === "") {
@@ -76,7 +76,7 @@ export default function MedicineList() {
     setFilteredList(list.filter((m) => m.name.includes(text)));
   };
 
-  /* ====== 초성 ====== */
+  /* 초성 */
   const handleInitial = (ch) => {
     setActiveInitial(ch);
     setSearchText("");
@@ -89,14 +89,13 @@ export default function MedicineList() {
     );
   };
 
-  /* ====== 초성 X (4️⃣) ====== */
   const clearInitial = () => {
     setActiveInitial(null);
     setFilteredList(list);
     setCurrentPage(1);
   };
 
-  /* ====== 페이지네이션 ====== */
+  /* 페이지네이션 */
   const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentItems = filteredList.slice(
@@ -106,14 +105,39 @@ export default function MedicineList() {
 
   return (
     <div className="medicine-page">
-      <h2 className="page-title">💊 약품 목록</h2>
+
+      {/* ✅ 제목 + 약품 등록 버튼 (여기만 추가됨) */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "12px",
+        }}
+      >
+        <h2 className="page-title">💊 약품 목록</h2>
+
+        <button
+          onClick={() => (window.location.href = "/medicine/add")}
+          style={{
+            padding: "8px 14px",
+            backgroundColor: "#4CAF50",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          + 약품 등록
+        </button>
+      </div>
 
       <div className="medicine-layout">
         {/* ===== 왼쪽 검색 패널 ===== */}
         <div className="search-panel">
           <h3>조회할 약품이 뭔가요?</h3>
 
-          {/* 검색창 */}
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
 
@@ -124,16 +148,18 @@ export default function MedicineList() {
             />
 
             {searchText && (
-              <button className="clear-btn" onClick={() => {
-                setSearchText("");
-                setFilteredList(list);
-              }}>
+              <button
+                className="clear-btn"
+                onClick={() => {
+                  setSearchText("");
+                  setFilteredList(list);
+                }}
+              >
                 ✕
               </button>
             )}
           </div>
 
-          {/* ⭐ 초성 버튼 + X (3️⃣) */}
           <div className="initial-grid">
             {initials.map((ch) => (
               <button
@@ -145,7 +171,6 @@ export default function MedicineList() {
               </button>
             ))}
 
-            {/* 초성 해제 X */}
             {activeInitial && (
               <button
                 className="initial-clear-btn"
@@ -165,7 +190,6 @@ export default function MedicineList() {
             <p className="error-text">{error}</p>
           ) : (
             <>
-              {/* ⭐ 결과 개수 (1️⃣) */}
               <p className="result-count">
                 총 {filteredList.length}건
               </p>
@@ -227,7 +251,6 @@ export default function MedicineList() {
         </div>
       </div>
 
-      {/* 수정 모달 */}
       {showEdit && (
         <MedicineEdit
           medicineId={selectedId}

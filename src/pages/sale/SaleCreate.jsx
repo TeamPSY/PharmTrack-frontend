@@ -40,13 +40,20 @@ export default function SaleCreate() {
   );
   const totalPages = Math.ceil(medicines.length / itemsPerPage);
 
-  /* 장바구니 추가 */
+  /* 장바구니 추가 (재고 초과 방지) */
   const addToCart = (medicine) => {
+    if (medicine.stock <= 0) return;
+
     const exists = cart.find(
       (item) => item.medicineId === medicine.medicineId
     );
 
     if (exists) {
+      if (exists.qty >= medicine.stock) {
+        alert("재고 수량을 초과할 수 없습니다.");
+        return;
+      }
+
       setCart((prev) =>
         prev.map((item) =>
           item.medicineId === medicine.medicineId
@@ -59,7 +66,7 @@ export default function SaleCreate() {
     }
   };
 
-  /* 총 금액 (화면 표시용) */
+  /* 총 금액 */
   const totalPrice = cart.reduce(
     (sum, item) => sum + Number(item.price) * item.qty,
     0
@@ -72,9 +79,8 @@ export default function SaleCreate() {
       return;
     }
 
-    // ✅ 백엔드 SaleDto 구조에 맞춘 payload
+    // ✅ userId 제거 (컨트롤러에서 로그인 사용자 주입)
     const payload = {
-      userId: 1, // TODO: 로그인 연동 시 실제 userId로 교체
       items: cart.map((item) => ({
         medicineId: item.medicineId,
         quantity: item.qty,
@@ -82,16 +88,12 @@ export default function SaleCreate() {
       })),
     };
 
-    console.log("📦 판매 요청 payload", payload);
-
     try {
       const res = await createSale(payload);
-      const saleId = res.data;
-
-      navigate(`/sale/detail/${saleId}`);
+      navigate(`/sale/detail/${res.data}`);
     } catch (e) {
       console.error("❌ 판매 등록 실패:", e.response?.data || e);
-      alert("판매 등록 실패 (요청 데이터 확인)");
+      alert("판매 등록 실패");
     }
   };
 
@@ -115,6 +117,7 @@ export default function SaleCreate() {
                     <th>약품명</th>
                     <th>제조사</th>
                     <th>가격</th>
+                    <th>재고</th>
                     <th>추가</th>
                   </tr>
                 </thead>
@@ -125,9 +128,11 @@ export default function SaleCreate() {
                       <td className="medicine-name">{m.name}</td>
                       <td>{m.manufacturer}</td>
                       <td>{Number(m.price).toLocaleString()}원</td>
+                      <td>{m.stock}</td>
                       <td>
                         <button
                           className="add-btn"
+                          disabled={m.stock <= 0}
                           onClick={() => addToCart(m)}
                         >
                           추가

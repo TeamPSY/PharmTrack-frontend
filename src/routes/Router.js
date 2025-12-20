@@ -15,7 +15,7 @@ import SaleMenu from "../pages/sale/SaleMenu";
 import SaleCreate from "../pages/sale/SaleCreate";
 import SaleList from "../pages/sale/SaleList";
 import SaleDetail from "../pages/sale/SaleDetail";
-import SaleStatistic from "../pages/sale/SaleStatistic"; // ⭐ 추가
+import SaleStatistic from "../pages/sale/SaleStatistic";
 
 // 재고
 import InventoryList from "../pages/inventory/InventoryList";
@@ -31,44 +31,32 @@ import ProtectedRoute from "../components/ProtectedRoute";
 export default function Router() {
   return (
     <Routes>
+      {/* 기본 */}
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="/home" element={<Home />} />
 
-      {/* 판매 */}
+      {/* ================= 판매 ================= */}
       <Route path="/sale" element={<ProtectedRoute><SaleMenu /></ProtectedRoute>} />
       <Route path="/sale/create" element={<ProtectedRoute><SaleCreate /></ProtectedRoute>} />
       <Route path="/sale/list" element={<ProtectedRoute><SaleList /></ProtectedRoute>} />
       <Route path="/sale/detail/:id" element={<ProtectedRoute><SaleDetail /></ProtectedRoute>} />
+      <Route path="/sale/statistic" element={<ProtectedRoute><SaleStatistic /></ProtectedRoute>} />
 
-      {/* ⭐ 판매 통계 */}
-      <Route
-        path="/sale/statistic"
-        element={
-          <ProtectedRoute>
-            <SaleStatistic />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* 약품 */}
+      {/* ================= 약품 ================= */}
       <Route path="/medicine" element={<ProtectedRoute><MedicineMenu /></ProtectedRoute>} />
       <Route path="/medicine/list" element={<ProtectedRoute><MedicineList /></ProtectedRoute>} />
       <Route path="/medicine/add" element={<ProtectedRoute><MedicineForm /></ProtectedRoute>} />
       <Route path="/medicine/delete" element={<ProtectedRoute><MedicineDelete /></ProtectedRoute>} />
       <Route path="/medicine/expiring-list" element={<ProtectedRoute><MedicineExpiringList /></ProtectedRoute>} />
 
-      {/* 재고 */}
+      {/* ================= 재고 ================= */}
       <Route path="/inventory" element={<ProtectedRoute><InventoryList /></ProtectedRoute>} />
       <Route
         path="/inventory/:medicineId/lots"
-        element={
-          <ProtectedRoute>
-            <InventoryLotPage />
-          </ProtectedRoute>
-        }
+        element={<ProtectedRoute><InventoryLotPage /></ProtectedRoute>}
       />
 
-      {/* 인증 */}
+      {/* ================= 인증 ================= */}
       <Route path="/register" element={<UserRegister />} />
       <Route path="/login" element={<UserLogin />} />
       <Route path="/user/update" element={<UserUpdate />} />

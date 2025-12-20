@@ -2,35 +2,40 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "http://localhost:9090",
-  headers: { "Content-Type": "application/json" }
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-function getUserId() {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user).userId : null;
-}
-
-/* ===========================
-   판매 기본 API
-=========================== */
-
-// 판매 목록
-export const getSaleList = () => API.get("/api/sales");
-
-// 판매 상세
-export const getSaleDetail = (id) => API.get(`/api/sales/${id}`);
+/* =========================
+   🔹 판매 관련 기존 API
+========================= */
 
 // 판매 등록
 export const createSale = (data) =>
-  API.post("/api/sales", {
-    ...data,
-    userId: getUserId(), // 자동 userId
+  API.post("/api/sales", data, { withCredentials: true });
+
+// 판매 목록
+export const getSaleList = () =>
+  API.get("/api/sales");
+
+// 판매 상세
+export const getSaleDetail = (saleId) =>
+  API.get(`/api/sales/${saleId}`);
+
+
+/* =========================
+   📊 판매 통계 API
+========================= */
+
+// 일별 매출 통계
+export const getDailySales = (startDate, endDate) =>
+  API.get("/api/sales/statistics/daily", {
+    params: { startDate, endDate },
   });
 
-/* ===========================
-   ⭐ 판매 통계 API (추가)
-=========================== */
-
-// 판매 통계 조회
-export const getSaleStatistics = () =>
-  API.get("/api/sales/statistics");
+// 약품별 판매 통계
+export const getMedicineSales = (startDate, endDate) =>
+  API.get("/api/sales/statistics/by-medicine", {
+    params: { startDate, endDate },
+  });
