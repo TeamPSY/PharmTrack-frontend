@@ -44,14 +44,20 @@ export default function InventoryList() {
     let sorted = [...list];
 
     switch (sortType) {
-      case "name":
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
+       case "name":
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+
+      case "stockAsc": // ✅ 재고 부족순 (오름차순)
+        sorted.sort((a, b) => a.stock - b.stock);
         break;
-      case "stock":
+
+      case "stockDesc": // ✅ 재고 많은순 (내림차순)
         sorted.sort((a, b) => b.stock - a.stock);
         break;
-      default:
-        sorted.sort((a, b) => a.medicineId - b.medicineId);
+
+    default: // "number"
+      sorted.sort((a, b) => a.medicineId - b.medicineId);
     }
 
     setSortedList(sorted);
@@ -98,24 +104,38 @@ export default function InventoryList() {
 
             {/* 헤더 */}
             <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
-              <h2 className="title-green">재고 관리</h2>
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    marginBottom: "16px",
+  }}
+>
+  <div>
+    <h2 className="title-green">재고 관리</h2>
+    <p
+      style={{
+        fontSize: "13px",
+        color: "#6b6b6b",
+        marginTop: "4px",
+      }}
+    >
+      총 {sortedList.length}건
+    </p>
+  </div>
 
-              <select
-                value={sortType}
-                onChange={(e) => setSortType(e.target.value)}
-              >
-                <option value="number">번호순</option>
-                <option value="name">가나다순</option>
-                <option value="stock">재고순</option>
-              </select>
-            </div>
+  <select
+    value={sortType}
+    onChange={(e) => setSortType(e.target.value)}
+  >
+    <option value="ID">ID 번호순</option>
+    <option value="stockAsc">재고 부족순</option>
+  <option value="stockDesc">재고 많은순</option>
+  <option value="name">가나다순</option>
+  
+  </select>
+</div>
+
 
             {message && <div className="message-box">{message}</div>}
 
@@ -123,6 +143,7 @@ export default function InventoryList() {
             <table className="inventory-table">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>약품명</th>
                   <th>재고</th>
                   <th>입고/출고</th>
@@ -135,6 +156,7 @@ export default function InventoryList() {
               <tbody>
                 {currentItems.map((m) => (
                   <tr key={m.medicineId}>
+                    <td>{m.medicineId}</td>
                     <td>{m.name}</td>
                     <td>{m.stock}</td>
                     <td>

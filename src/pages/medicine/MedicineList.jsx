@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getMedicineList } from "../../api/medicineApi";
+import {
+  getMedicineList,
+  deleteMedicine,
+} from "../../api/medicineApi";
 import MedicineEdit from "./MedicineEditModal";
 import MedicineAddModal from "./MedicineAddModal";
 import "../../styles/MedicineList.css";
@@ -26,31 +29,24 @@ const toInitialString = (str) =>
   str.split("").map(getInitial).join("");
 
 export default function MedicineList() {
+  /* ===== 상태 ===== */
   const [list, setList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  /* 페이지 */
   const [currentPage, setCurrentPage] = useState(1);
-
-  /* 수정 모달 */
   const [showEdit, setShowEdit] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-
-  /* 추가 모달 */
   const [showAdd, setShowAdd] = useState(false);
 
-  /* 검색 */
   const [searchText, setSearchText] = useState("");
-
-  /* 초성 */
   const [activeInitial, setActiveInitial] = useState(null);
-
-  /* 정렬 */
   const [sortType, setSortType] = useState("number");
 
+  /* ===== 데이터 로드 ===== */
   useEffect(() => {
     load();
   }, []);
@@ -69,7 +65,7 @@ export default function MedicineList() {
       .finally(() => setLoading(false));
   };
 
-  /* 검색 */
+  /* ===== 검색 ===== */
   const handleSearch = (text) => {
     setSearchText(text);
     setActiveInitial(null);
@@ -83,16 +79,14 @@ export default function MedicineList() {
     setFilteredList(list.filter((m) => m.name.includes(text)));
   };
 
-  /* 초성 */
+  /* ===== 초성 ===== */
   const handleInitial = (ch) => {
     setActiveInitial(ch);
     setSearchText("");
     setCurrentPage(1);
 
     setFilteredList(
-      list.filter((m) =>
-        toInitialString(m.name).startsWith(ch)
-      )
+      list.filter((m) => toInitialString(m.name).startsWith(ch))
     );
   };
 
@@ -102,7 +96,37 @@ export default function MedicineList() {
     setCurrentPage(1);
   };
 
-  /* 정렬 */
+  /* ===== 체크박스 ===== */
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((v) => v !== id)
+        : [...prev, id]
+    );
+  };
+
+  /* ===== 삭제 ===== */
+  const handleDelete = async () => {
+    if (selectedIds.length === 0) return;
+
+    const ok = window.confirm(
+      `선택한 ${selectedIds.length}개의 약품을 삭제하시겠습니까?\n(복구 불가)`
+    );
+    if (!ok) return;
+
+    try {
+      await Promise.all(
+        selectedIds.map((id) => deleteMedicine(id))
+      );
+      alert("삭제되었습니다.");
+      setSelectedIds([]);
+      load();
+    } catch (e) {
+      alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  /* ===== 정렬 ===== */
   const sortedList = [...filteredList].sort((a, b) => {
     switch (sortType) {
       case "name":
@@ -114,7 +138,7 @@ export default function MedicineList() {
     }
   });
 
-  /* 페이지네이션 */
+  /* ===== 페이지네이션 ===== */
   const totalPages = Math.ceil(sortedList.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentItems = sortedList.slice(
@@ -124,39 +148,26 @@ export default function MedicineList() {
 
   return (
     <div className="medicine-page">
-      {/* ===== 제목 + 등록 버튼 ===== */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "12px",
-        }}
-      >
+      {/* 제목 */}
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
         <h2 className="page-title">💊 약품 목록</h2>
-
-        <button
-          className="add-medicine-btn"
-          onClick={() => setShowAdd(true)}
-        >
+        <button className="add-medicine-btn" onClick={() => setShowAdd(true)}>
           + 약품 등록
         </button>
       </div>
 
       <div className="medicine-layout">
-        {/* ===== 왼쪽 검색 패널 ===== */}
+        {/* 검색 패널 */}
         <div className="search-panel">
           <h3>조회할 약품이 뭔가요?</h3>
 
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
-
             <input
               placeholder="약품명을 입력하세요"
               value={searchText}
               onChange={(e) => handleSearch(e.target.value)}
             />
-
             {searchText && (
               <button
                 className="clear-btn"
@@ -181,55 +192,40 @@ export default function MedicineList() {
                 {ch}
               </button>
             ))}
-
             {activeInitial && (
-              <button
-                className="initial-clear-btn"
-                onClick={clearInitial}
-              >
+              <button className="initial-clear-btn" onClick={clearInitial}>
                 ✕
               </button>
             )}
           </div>
         </div>
 
-        {/* ===== 오른쪽 결과 ===== */}
+        {/* 결과 */}
         <div className="result-area">
           {loading ? (
-            <p className="status-text">불러오는 중...</p>
+            <p>불러오는 중...</p>
           ) : error ? (
-            <p className="error-text">{error}</p>
+            <p>{error}</p>
           ) : (
             <>
-              {/* 결과 수 + 정렬 */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                }}
-              >
-                <p className="result-count">
-                  총 {sortedList.length}건
-                </p>
-
-                <select
-                  value={sortType}
-                  onChange={(e) => {
-                    setSortType(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                >
-                  <option value="number">번호순</option>
-                  <option value="name">가나다순</option>
-                  <option value="price">가격순</option>
-                </select>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+                <p>총 {sortedList.length}건</p>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <select value={sortType} onChange={(e) => setSortType(e.target.value)}>
+                    <option value="number">ID번호순</option>
+                    <option value="name">가나다순</option>
+                    <option value="price">가격순</option>
+                  </select>
+                  <button className="delete-btn" disabled={selectedIds.length === 0} onClick={handleDelete}>
+                    🗑 선택 삭제
+                  </button>
+                </div>
               </div>
 
               <table className="medicine-table">
                 <thead>
                   <tr>
+                    <th>선택</th>
                     <th>ID</th>
                     <th>약품명</th>
                     <th>제조사</th>
@@ -242,8 +238,15 @@ export default function MedicineList() {
                 <tbody>
                   {currentItems.map((m) => (
                     <tr key={m.medicineId}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(m.medicineId)}
+                          onChange={() => toggleSelect(m.medicineId)}
+                        />
+                      </td>
                       <td>{m.medicineId}</td>
-                      <td className="medicine-name">{m.name}</td>
+                      <td>{m.name}</td>
                       <td>{m.manufacturer}</td>
                       <td>{Number(m.price).toLocaleString()}원</td>
                       <td>{m.stock}</td>
@@ -265,59 +268,58 @@ export default function MedicineList() {
               </table>
 
               {/* 페이지네이션 */}
-              <div className="pagination">
-                <button
-                  className="page-nav"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(1)}
-                >
-                  ≪
-                </button>
+<div className="pagination">
+  <button
+    className="page-nav"
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage(1)}
+  >
+    ≪
+  </button>
 
-                <button
-                  className="page-nav"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  ＜
-                </button>
+  <button
+    className="page-nav"
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage((p) => p - 1)}
+  >
+    ＜
+  </button>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      className={`page-btn ${
-                        currentPage === page ? "active" : ""
-                      }`}
-                      onClick={() => setCurrentPage(page)}
-                    >
-                      {page}
-                    </button>
-                  )
-                )}
+  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+    (page) => (
+      <button
+        key={page}
+        className={`page-btn ${
+          currentPage === page ? "active" : ""
+        }`}
+        onClick={() => setCurrentPage(page)}
+      >
+        {page}
+      </button>
+    )
+  )}
 
-                <button
-                  className="page-nav"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  ＞
-                </button>
+  <button
+    className="page-nav"
+    disabled={currentPage === totalPages}
+    onClick={() => setCurrentPage((p) => p + 1)}
+  >
+    ＞
+  </button>
 
-                <button
-                  className="page-nav"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(totalPages)}
-                >
-                  ≫
-                </button>
-              </div>
+  <button
+    className="page-nav"
+    disabled={currentPage === totalPages}
+    onClick={() => setCurrentPage(totalPages)}
+  >
+    ≫
+  </button>
+</div>
             </>
           )}
         </div>
       </div>
 
-      {/* ===== 모달 ===== */}
       {showEdit && (
         <MedicineEdit
           medicineId={selectedId}

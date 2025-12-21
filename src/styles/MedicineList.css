@@ -378,7 +378,8 @@
 }
 
 .add-medicine-btn {
-  padding: 8px 14px;
+  height: 36px;                /* ⭐ 버튼 높이 통일 */
+  padding: 0 14px;
   background: #4caf50;
   color: #fff;
   border: none;
@@ -387,4 +388,16 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s ease;
+}
+
+.delete-btn {
+  height: 37px;  
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #f8fdf9;
+  cursor: pointer;
 }
