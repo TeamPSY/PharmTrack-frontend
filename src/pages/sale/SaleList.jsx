@@ -11,54 +11,47 @@ export default function SaleList() {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [title, setTitle] = useState("");
 
   const navigate = useNavigate();
 
-  /** 🔧 한국시간 날짜 문자열 변환 함수 */
+  /* 한국시간 날짜 포맷 */
   const formatDate = (date) => {
     const offset = date.getTimezoneOffset() * 60000;
     const local = new Date(date.getTime() - offset);
     return local.toISOString().slice(0, 10);
   };
 
-  /** 📌 최초 로드시 오늘 날짜 판매량 자동 표시 */
+  /* 최초 로드: 오늘 판매 내역 */
   useEffect(() => {
     getSaleList()
       .then((res) => {
-        let data = res.data;
-        if (Array.isArray(data)) {
-          setSales(data);
+        const data = Array.isArray(res.data) ? res.data : [];
+        setSales(data);
 
-          const today = new Date();
-          setSelectedDate(today);
+        const today = new Date();
+        setSelectedDate(today);
 
-          const todayStr = formatDate(today);
+        const todayStr = formatDate(today);
+        const todaySales = data.filter(
+          (s) => s.saleTime.slice(0, 10) === todayStr
+        );
 
-          const todaySales = data.filter(
-            (s) => s.saleTime.slice(0, 10) === todayStr
-          );
-
-          setFiltered(todaySales);
-
-          // 🔥 제목 변경
-          setTitle(`${todayStr} 판매량`);
-        }
+        setFiltered(todaySales);
+        setTitle(`${todayStr} 판매량`);
       })
       .catch(() => alert("판매 내역 불러오기 실패"));
   }, []);
 
-  /** 🔍 기간 필터 */
+  /* 기간 조회 */
   const filterByDate = () => {
     if (!startDate || !endDate) {
       alert("기간을 모두 선택해주세요.");
       return;
     }
 
-    // endDate 를 하루 끝 23:59:59 로 조정
     const endOfDay = new Date(endDate);
     endOfDay.setHours(23, 59, 59, 999);
 
@@ -69,41 +62,42 @@ export default function SaleList() {
 
     setFiltered(result);
     setSelectedDate(null);
-
-    // 🔥 제목을 "기간 판매량"으로 변경
     setTitle("기간 판매량");
   };
 
-  /** 📅 달력 날짜 클릭 시 해당 날짜 매출 표시 */
+  /* 달력 클릭 */
   const handleCalendarClick = (date) => {
     setSelectedDate(date);
 
     const dateStr = formatDate(date);
-
     const daily = sales.filter(
       (item) => item.saleTime.slice(0, 10) === dateStr
     );
 
     setFiltered(daily);
-
-    // 🔥 제목 변경
     setTitle(`${dateStr} 판매량`);
   };
 
-  /** 💰 총 수입 계산 */
-  const totalIncome = filtered.reduce((acc, cur) => acc + cur.totalPrice, 0);
+  /* 총 수입 */
+  const totalIncome = filtered.reduce(
+    (acc, cur) => acc + cur.totalPrice,
+    0
+  );
 
   return (
     <div className="sale-container">
+      {/* ===== 헤더 ===== */}
       <div className="sale-header">
-        <h2>판매 내역 조회</h2>
+        <h2 className="sale-title">판매 내역 조회</h2>
+
         <button className="back-btn" onClick={() => navigate(-1)}>
-          ← 뒤로가기
+          back
         </button>
       </div>
 
+      {/* ===== 본문 ===== */}
       <div className="sale-content">
-        {/* 왼쪽: 제목 + 특정 날짜/기간 판매량 */}
+        {/* 왼쪽 */}
         <div className="sale-today-box">
           <h3>{title}</h3>
 
@@ -111,8 +105,8 @@ export default function SaleList() {
             {filtered.length > 0 ? (
               filtered.map((sale) => (
                 <li key={sale.saleId}>
-                  {sale.saleTime.slice(0, 10)} :{" "}
-                  {sale.totalPrice.toLocaleString()}원
+                  <span>{sale.saleTime.slice(0, 10)}</span>
+                  <span>{sale.totalPrice.toLocaleString()}원</span>
                 </li>
               ))
             ) : (
@@ -121,7 +115,7 @@ export default function SaleList() {
           </ul>
         </div>
 
-        {/* 오른쪽: 기간 선택 + 달력 */}
+        {/* 오른쪽 */}
         <div className="sale-period-section">
           <div className="date-filter">
             <DatePicker
@@ -157,6 +151,7 @@ export default function SaleList() {
         </div>
       </div>
 
+      {/* ===== KPI ===== */}
       <div className="total-income-box">
         총 수입 : {totalIncome.toLocaleString()}원
       </div>

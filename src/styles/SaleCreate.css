@@ -204,4 +204,65 @@
   border-radius: 12px;
 }
 
+.page-nav {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #bfe5c8;
+  background: #ffffff;
+  color: #2e7d32;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
+.page-nav:hover:not(:disabled) {
+  background: #e8f5e9;
+}
+
+.page-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sort-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #f8fdf9;
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #66bb6a;
+}
+
+.sale-header {
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  margin-left: auto;   /* ⭐ 이 한 줄이 핵심 */
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2e7d32;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.back-btn::before {
+  margin-right: 6px;
+}

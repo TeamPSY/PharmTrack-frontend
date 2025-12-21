@@ -6,7 +6,6 @@
   max-width: 1440px;
   margin: 0 auto;
   background: #f5f7f6;
-  box-sizing: border-box;
   min-height: 100vh;
 }
 
@@ -16,7 +15,18 @@
 .sale-header {
   display: flex;
   align-items: center;
-  margin-bottom: 32px;
+  justify-content: space-between;
+
+  width: 100%;              /* ⭐⭐⭐ 핵심 */
+  max-width: 1440px;        /* 컨테이너와 동일 */
+  margin: 0 auto 32px;      /* 가운데 + 아래 여백 */
+}
+
+.sale-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f6a2b;
+  margin: 0;
 }
 
 .back-btn {
@@ -30,15 +40,7 @@
 }
 
 .back-btn::before {
-  content: "←";
   margin-right: 6px;
-}
-
-.sale-header h2 {
-  margin-left: 16px;
-  font-size: 26px;
-  font-weight: 800;
-  color: #1f6a2b;
 }
 
 /* =========================
@@ -74,7 +76,6 @@
   margin: 0;
 }
 
-/* 판매 리스트 아이템 */
 .sale-today-box li {
   padding: 14px 18px;
   border-radius: 10px;
@@ -91,17 +92,8 @@
   color: #333;
 }
 
-.sale-today-box li:last-child {
-  margin-bottom: 0;
-}
-
-.sale-today-box li span:last-child {
-  font-weight: 800;
-  color: #2e7d32;
-}
-
 /* =========================
-   오른쪽: 기간 선택 / 달력
+   오른쪽: 기간 / 달력
 ========================= */
 .sale-period-section {
   display: flex;
@@ -109,7 +101,6 @@
   gap: 20px;
 }
 
-/* 기간 필터 */
 .date-filter {
   background: #ffffff;
   padding: 16px;
@@ -143,7 +134,6 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
-  transition: 0.15s ease;
 }
 
 .filter-btn:hover {
@@ -151,7 +141,7 @@
 }
 
 /* =========================
-   달력 카드
+   달력
 ========================= */
 .calendar-real {
   background: #ffffff;
@@ -160,7 +150,6 @@
   border: 1px solid #e3e7e4;
 }
 
-/* react-datepicker */
 .react-datepicker {
   border: none;
 }
@@ -178,22 +167,18 @@
 }
 
 /* =========================
-   총 수입 KPI
+   KPI
 ========================= */
 .total-income-box {
   margin: 40px auto 0;
   max-width: 420px;
-
   background: linear-gradient(135deg, #2e7d32, #4caf50);
   color: #ffffff;
-
   padding: 26px;
   border-radius: 18px;
-
   font-size: 24px;
   font-weight: 800;
   text-align: center;
-
   box-shadow: 0 14px 36px rgba(46, 125, 50, 0.35);
 }
 

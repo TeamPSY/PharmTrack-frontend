@@ -1,277 +1,257 @@
-/* 전체 컨테이너 */
+/* =========================
+   전체 컨테이너
+========================= */
 .inventory-container {
-  padding: 30px;
-  max-width: 900px;
+  padding: 32px 40px;
+  max-width: 1600px;
   margin: 0 auto;
+  box-sizing: border-box;
+  background: #f6faf6;
 }
 
-/* 카드 스타일 */
+/* 좌우 레이아웃 */
+.inventory-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* =========================
+   왼쪽 영역 (테이블)
+========================= */
+.inventory-left {
+  flex: 1;
+}
+
+/* 카드 */
 .inventory-card {
   background: #ffffff;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* 메시지 박스 */
+/* 제목 */
+.title-green {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f7a3d;
+}
+
+/* 정렬 셀렉트 */
+.inventory-card select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #cce3d0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* =========================
+   메시지 박스
+========================= */
 .message-box {
-  background-color: #e6f8dd;
+  background: #e6f8dd;
   border-left: 6px solid #4caf50;
   padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-weight: 700;
   color: #2d6042;
-  font-weight: 600;
-  animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 테이블 디자인 */
+/* =========================
+   테이블
+========================= */
 .inventory-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
   font-size: 15px;
 }
 
-.inventory-table thead th {
-  background-color: #d4f0c4;
-  color: #2d6042;
-  padding: 12px;
-  font-weight: 600;
-  border-bottom: 2px solid #bcdcad;
-  text-align: center;
+.inventory-table thead {
+  background: #f1f7f2;
 }
 
-.inventory-table tbody td {
-  padding: 12px;
+.inventory-table th,
+.inventory-table td {
+  padding: 12px 10px;
   text-align: center;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #e0eee4;
 }
 
-/* hover 효과 */
+.inventory-table th {
+  font-weight: 800;
+  color: #2e7d32;
+}
+
 .inventory-table tbody tr:hover {
-  background-color: #f5fff1;
-  transition: 0.2s;
+  background: #f8fcf8;
 }
 
-/* 버튼 기본 스타일 */
+/* 약품명만 왼쪽 정렬 */
+.inventory-table td:first-child {
+  text-align: left;
+  padding-left: 14px;
+  font-weight: 600;
+}
+
+/* =========================
+   버튼 스타일
+========================= */
+button {
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* +1 / -1 */
 .btn-icon {
   padding: 6px 10px;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  margin: 0 5px;
-  transition: 0.2s ease;
+  border-radius: 8px;
+  margin: 0 3px;
+  font-size: 13px;
 }
 
-/* +1 버튼 */
 .btn-sell {
-  background-color: #4caf50;
-  color: white;
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
-.btn-sell:hover {
-  background-color: #3d8c42;
-  transform: translateY(-2px);
-}
-
-/* -1 버튼 */
 .btn-delete {
-  background-color: #e57373;
-  color: white;
+  background: #fdecea;
+  color: #c62828;
 }
 
-.btn-delete:hover {
-  background-color: #d45f5f;
-  transform: translateY(-2px);
-}
-
-/* 재고 직접 입력 */
-.stock-input {
-  width: 70px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid #b5ccb5;
-  text-align: center;
-  font-size: 15px;
-}
-
-.stock-input:focus {
-  outline: none;
-  border-color: #4caf50;
-  box-shadow: 0 0 3px rgba(76, 175, 80, 0.4);
-}
-
-/* 저장 버튼 (초록색) */
+/* 저장 버튼 */
 .btn-green {
-  padding: 8px 14px;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s ease;
-  font-weight: 600;
+  background: #2e7d32;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 10px;
 }
 
 .btn-green:hover {
-  background-color: #3d8c42;
-  transform: translateY(-2px);
+  background: #256628;
 }
 
-/* 전체 레이아웃: 왼쪽 + 오른쪽 */
-.inventory-layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-/* 왼쪽 영역 */
-.inventory-left {
-  flex: 3;
-}
-
-/* 오른쪽 영역 */
-.inventory-right {
-  flex: 1.2;
-}
-
-/* 재고 부족 카드 */
-.alert-card {
-  background: #fff7ef;
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-}
-
-.alert-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #d87b2f;
-  margin-bottom: 12px;
-}
-
-.no-alert {
+/* LOT 버튼 */
+.btn-gray {
+  background: #f1f3f4;
   color: #555;
-  font-size: 14px;
-  padding: 10px 0;
-}
-
-/* 개별 알림 아이템 */
-.alert-item {
-  background: #fff;
-  padding: 12px;
+  padding: 6px 14px;
   border-radius: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-left: 5px solid #ff9b63;
 }
 
-.alert-item:hover {
-  background-color: #fff0e2;
-  transition: 0.2s;
+.btn-gray:hover {
+  background: #e0e0e0;
 }
 
-.alert-category {
-  font-size: 13px;
-  color: #999;
+/* 이력 버튼 */
+.btn-history {
+  background: #fff3cd;
+  color: #856404;
+  padding: 6px 14px;
+  border-radius: 10px;
 }
 
-.alert-stock {
-  color: #d45a2a;
-  font-weight: 600;
+.btn-history:hover {
+  background: #ffe69c;
 }
 
-/* 정렬 버튼 박스 */
-.inventory-sort-box {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
+/* =========================
+   재고 입력
+========================= */
+.stock-input {
+  width: 70px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+  text-align: center;
 }
 
-/* 정렬 버튼 */
-.sort-btn {
-  padding: 8px 12px;
-  background-color: #e6f8dd;
-  border: 1px solid #b5d8b0;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  color: #2d6042;
-  transition: 0.2s ease;
-}
-
-.sort-btn:hover {
-  background-color: #c9efc1;
-  transform: translateY(-2px);
-}
-
+/* =========================
+   페이지네이션
+========================= */
 .pagination {
-  margin-top: 20px;
+  margin-top: 22px;
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .page-btn {
-  padding: 8px 14px;
-  background-color: #d4f0c4;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #2d6042;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #f1f3f4;
+  font-weight: 700;
 }
 
 .page-btn.active {
-  background-color: #4caf50;
-  color: white;
+  background: #2e7d32;
+  color: #ffffff;
 }
 
-
-.inventory-layout {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-.inventory-left {
-  flex: 3;
-}
-
+/* =========================
+   오른쪽 패널
+========================= */
 .inventory-right {
-  flex: 1.2;
+  width: 320px;
+  position: sticky;
+  top: 30px;
 }
 
-/* LOT 버튼 (초록색) */
-.btn-gray {
-  padding: 8px 14px;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s ease;
-  font-weight: 600;
+.inventory-panel {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* 이력보기 버튼 (초록색) */
-.btn-history {
-  padding: 8px 14px;
-  background-color: #4caf50;
-  color: white;
+.inventory-panel h3 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #1f7a3d;
+}
+
+/* 패널 아이템 */
+.panel-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-weight: 700;
+  border-bottom: 1px dashed #dfeee3;
+}
+
+.panel-item.warning {
+  color: #c62828;
+}
+
+/* 패널 버튼 */
+.panel-btn {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: 800;
+}
+
+.panel-btn:hover {
+  background: #ffcdd2;
+}
+
+.page-btn {
+  padding: 6px 12px;
   border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s ease;
-  font-weight: 600;
+  background: #f1f3f4;
+  font-weight: 700;
+}
+
+.page-btn.active {
+  background: #2e7d32;
+  color: #ffffff;
 }

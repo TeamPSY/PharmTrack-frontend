@@ -5,6 +5,9 @@ import { createSale } from "../../api/saleApi";
 import { useNavigate } from "react-router-dom";
 
 export default function SaleCreate() {
+  const navigate = useNavigate();
+
+  /* 상태 */
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
 
@@ -12,7 +15,26 @@ export default function SaleCreate() {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const navigate = useNavigate();
+  /* 정렬 */
+  const [sortType, setSortType] = useState("number");
+
+  /* 정렬 함수 */
+  const handleSort = (list) => {
+    const sorted = [...list];
+
+    switch (sortType) {
+      case "name": // 가나다순
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "price": // 가격순
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      default: // 번호순
+        sorted.sort((a, b) => a.medicineId - b.medicineId);
+    }
+
+    return sorted;
+  };
 
   /* 약품 목록 불러오기 */
   useEffect(() => {
@@ -28,19 +50,21 @@ export default function SaleCreate() {
     load();
   }, []);
 
-  /* medicines 변경 시 페이지 초기화 */
+  /* 정렬/목록 변경 시 페이지 초기화 */
   useEffect(() => {
     setCurrentPage(1);
-  }, [medicines.length]);
+  }, [sortType, medicines.length]);
 
+  /* 정렬 + 페이지네이션 적용 */
+  const sortedMedicines = handleSort(medicines);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentMedicines = medicines.slice(
+  const currentMedicines = sortedMedicines.slice(
     startIndex,
     startIndex + itemsPerPage
   );
-  const totalPages = Math.ceil(medicines.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedMedicines.length / itemsPerPage);
 
-  /* 장바구니 추가 (재고 초과 방지) */
+  /* 장바구니 추가 */
   const addToCart = (medicine) => {
     if (medicine.stock <= 0) return;
 
@@ -72,14 +96,13 @@ export default function SaleCreate() {
     0
   );
 
-  /* ✅ 판매 등록 */
+  /* 판매 등록 */
   const submitSale = async () => {
     if (cart.length === 0) {
       alert("선택된 상품이 없습니다.");
       return;
     }
 
-    // ✅ userId 제거 (컨트롤러에서 로그인 사용자 주입)
     const payload = {
       items: cart.map((item) => ({
         medicineId: item.medicineId,
@@ -92,19 +115,35 @@ export default function SaleCreate() {
       const res = await createSale(payload);
       navigate(`/sale/detail/${res.data}`);
     } catch (e) {
-      console.error("❌ 판매 등록 실패:", e.response?.data || e);
+      console.error("판매 등록 실패:", e);
       alert("판매 등록 실패");
     }
   };
 
   return (
     <div className="sale-create-container">
+      <div className="sale-header">
       <h2 className="sale-title">🛒 판매 등록</h2>
-
+      <button className="back-btn" onClick={() => navigate(-1)}>
+          back
+      </button>
+      </div>
       <div className="sale-flex-box">
         {/* 왼쪽: 약품 목록 */}
         <div className="left-box">
-          <h3 className="section-title">약품 목록</h3>
+          <div className="list-header">
+            <h3 className="section-title">약품 목록</h3>
+
+            <select
+              className="sort-select"
+              value={sortType}
+              onChange={(e) => setSortType(e.target.value)}
+            >
+              <option value="number">번호순</option>
+              <option value="name">가나다순</option>
+              <option value="price">가격순</option>
+            </select>
+          </div>
 
           {medicines.length === 0 ? (
             <p className="empty-text">약품 데이터가 없습니다.</p>
@@ -145,6 +184,22 @@ export default function SaleCreate() {
 
               {/* 페이지네이션 */}
               <div className="pagination">
+                <button
+                  className="page-nav"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(1)}
+                >
+                  ≪
+                </button>
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  ＜
+                </button>
+
                 {Array.from({ length: totalPages }).map((_, i) => (
                   <button
                     key={i}
@@ -156,6 +211,22 @@ export default function SaleCreate() {
                     {i + 1}
                   </button>
                 ))}
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  ＞
+                </button>
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(totalPages)}
+                >
+                  ≫
+                </button>
               </div>
             </>
           )}

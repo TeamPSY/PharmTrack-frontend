@@ -48,6 +48,7 @@ export default function Router() {
       <Route path="/medicine/add" element={<ProtectedRoute><MedicineForm /></ProtectedRoute>} />
       <Route path="/medicine/delete" element={<ProtectedRoute><MedicineDelete /></ProtectedRoute>} />
       <Route path="/medicine/expiring-list" element={<ProtectedRoute><MedicineExpiringList /></ProtectedRoute>} />
+      <Route path="/medicine/list" element={<MedicineList />} />
 
       {/* ================= 재고 ================= */}
       <Route path="/inventory" element={<ProtectedRoute><InventoryList /></ProtectedRoute>} />

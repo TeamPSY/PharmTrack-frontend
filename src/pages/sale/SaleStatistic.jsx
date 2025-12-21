@@ -4,10 +4,14 @@ import {
   PieChart, Pie, Cell
 } from "recharts";
 import { getDailySales, getMedicineSales } from "../../api/saleApi";
+import "../../styles/SaleList.css";
+import { useNavigate } from "react-router-dom";
+
 
 const COLORS = ["#4CAF50", "#FFC107", "#FF5722", "#2196F3"];
 
 export default function SaleStatistic() {
+  const navigate = useNavigate();
   const [dailySales, setDailySales] = useState([]);
   const [medicineSales, setMedicineSales] = useState([]);
 
@@ -32,9 +36,17 @@ export default function SaleStatistic() {
     }
   };
 
+
   return (
     <div style={{ padding: 30 }}>
-      <h2>📊 판매 통계</h2>
+
+      {/* ⭐ 헤더 영역 */}
+      <div className="sale-header">
+        <h2>📊 판매 통계</h2>
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          back
+        </button>
+      </div>
 
       {/* 📈 일별 매출 */}
       <div style={{ width: "100%", height: 300 }}>

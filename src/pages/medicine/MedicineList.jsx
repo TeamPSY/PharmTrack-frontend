@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getMedicineList } from "../../api/medicineApi";
 import MedicineEdit from "./MedicineEditModal";
+import MedicineAddModal from "./MedicineAddModal";
 import "../../styles/MedicineList.css";
 import "../../styles/SearchPanel.css";
 
@@ -38,11 +39,17 @@ export default function MedicineList() {
   const [showEdit, setShowEdit] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
+  /* 추가 모달 */
+  const [showAdd, setShowAdd] = useState(false);
+
   /* 검색 */
   const [searchText, setSearchText] = useState("");
 
   /* 초성 */
   const [activeInitial, setActiveInitial] = useState(null);
+
+  /* 정렬 */
+  const [sortType, setSortType] = useState("number");
 
   useEffect(() => {
     load();
@@ -95,18 +102,29 @@ export default function MedicineList() {
     setCurrentPage(1);
   };
 
+  /* 정렬 */
+  const sortedList = [...filteredList].sort((a, b) => {
+    switch (sortType) {
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "price":
+        return a.price - b.price;
+      default:
+        return a.medicineId - b.medicineId;
+    }
+  });
+
   /* 페이지네이션 */
-  const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(sortedList.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentItems = filteredList.slice(
+  const currentItems = sortedList.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
 
   return (
     <div className="medicine-page">
-
-      {/* ✅ 제목 + 약품 등록 버튼 (여기만 추가됨) */}
+      {/* ===== 제목 + 등록 버튼 ===== */}
       <div
         style={{
           display: "flex",
@@ -118,16 +136,8 @@ export default function MedicineList() {
         <h2 className="page-title">💊 약품 목록</h2>
 
         <button
-          onClick={() => (window.location.href = "/medicine/add")}
-          style={{
-            padding: "8px 14px",
-            backgroundColor: "#4CAF50",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
+          className="add-medicine-btn"
+          onClick={() => setShowAdd(true)}
         >
           + 약품 등록
         </button>
@@ -153,6 +163,7 @@ export default function MedicineList() {
                 onClick={() => {
                   setSearchText("");
                   setFilteredList(list);
+                  setCurrentPage(1);
                 }}
               >
                 ✕
@@ -190,9 +201,31 @@ export default function MedicineList() {
             <p className="error-text">{error}</p>
           ) : (
             <>
-              <p className="result-count">
-                총 {filteredList.length}건
-              </p>
+              {/* 결과 수 + 정렬 */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                }}
+              >
+                <p className="result-count">
+                  총 {sortedList.length}건
+                </p>
+
+                <select
+                  value={sortType}
+                  onChange={(e) => {
+                    setSortType(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <option value="number">번호순</option>
+                  <option value="name">가나다순</option>
+                  <option value="price">가격순</option>
+                </select>
+              </div>
 
               <table className="medicine-table">
                 <thead>
@@ -231,7 +264,24 @@ export default function MedicineList() {
                 </tbody>
               </table>
 
+              {/* 페이지네이션 */}
               <div className="pagination">
+                <button
+                  className="page-nav"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(1)}
+                >
+                  ≪
+                </button>
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                >
+                  ＜
+                </button>
+
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                   (page) => (
                     <button
@@ -245,18 +295,45 @@ export default function MedicineList() {
                     </button>
                   )
                 )}
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                >
+                  ＞
+                </button>
+
+                <button
+                  className="page-nav"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(totalPages)}
+                >
+                  ≫
+                </button>
               </div>
             </>
           )}
         </div>
       </div>
 
+      {/* ===== 모달 ===== */}
       {showEdit && (
         <MedicineEdit
           medicineId={selectedId}
           onClose={() => setShowEdit(false)}
           onSuccess={() => {
             setShowEdit(false);
+            load();
+          }}
+        />
+      )}
+
+      {showAdd && (
+        <MedicineAddModal
+          onClose={() => setShowAdd(false)}
+          onSuccess={() => {
+            setShowAdd(false);
             load();
           }}
         />

@@ -124,7 +124,7 @@ export default function InventoryLotPage() {
         style={{ marginTop: 20 }}
         className="btn-gray"
       >
-        ← 뒤로가기
+        뒤로가기
       </button>
     </div>
   );
