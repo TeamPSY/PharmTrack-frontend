@@ -12,7 +12,7 @@
   margin-bottom: 20px;
 }
 
-/* 2컬럼 레이아웃 */
+/* ================= 레이아웃 ================= */
 .sale-flex-box {
   display: flex;
   gap: 30px;
@@ -43,7 +43,65 @@
   color: #2e7d32;
 }
 
-/* 약품 테이블 */
+/* ================= 상단 헤더 ================= */
+.sale-header {
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2e7d32;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+/* ================= 검색 + 정렬 ================= */
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #c8e6c9;
+  font-size: 14px;
+  font-weight: 500;
+  background: #f8fdf9;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #66bb6a;
+  background: #ffffff;
+}
+
+.sort-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #f8fdf9;
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #66bb6a;
+}
+
+/* ================= 약품 테이블 ================= */
 .medicine-table {
   width: 100%;
   border-collapse: collapse;
@@ -76,7 +134,7 @@
   color: #333;
 }
 
-/* 추가 버튼 */
+/* ================= 추가 버튼 ================= */
 .add-btn {
   padding: 6px 14px;
   background: #66bb6a;
@@ -93,7 +151,7 @@
   background: #4caf50;
 }
 
-/* 페이지네이션 */
+/* ================= 페이지네이션 ================= */
 .pagination {
   margin-top: 15px;
   display: flex;
@@ -101,19 +159,21 @@
   gap: 8px;
 }
 
-.page-btn {
+.page-btn,
+.page-nav {
   width: 34px;
   height: 34px;
   border-radius: 50%;
   border: 1px solid #bfe5c8;
   background: #ffffff;
   color: #2e7d32;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.page-btn:hover {
+.page-btn:hover,
+.page-nav:hover:not(:disabled) {
   background: #e8f5e9;
 }
 
@@ -123,7 +183,12 @@
   border-color: #66bb6a;
 }
 
-/* 선택 상품 테이블 */
+.page-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ================= 선택 상품 ================= */
 .cart-table {
   width: 100%;
   border-collapse: collapse;
@@ -149,45 +214,23 @@
   text-align: center;
 }
 
-/* 판매 버튼 */
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background: #2e7d32;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.submit-btn:hover {
-  background: #1b5e20;
-}
-
-/* 오른쪽 요약 영역 */
+/* ================= 요약 영역 ================= */
 .summary-box {
   margin-top: auto;
   padding-top: 15px;
   border-top: 2px dashed #c8e6c9;
 }
 
-/* 총 금액 행 */
 .summary-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   background: linear-gradient(135deg, #e8f5e9, #f1f8f3);
   padding: 16px;
   border-radius: 12px;
-
   font-size: 17px;
   font-weight: 600;
   color: #2e7d32;
-
   margin-bottom: 12px;
 }
 
@@ -196,73 +239,20 @@
   color: #1b5e20;
 }
 
-/* 판매 버튼 살짝 강조 */
+/* ================= 판매 버튼 ================= */
 .submit-btn {
   width: 100%;
   padding: 14px;
-  font-size: 17px;
+  background: #2e7d32;
+  color: white;
+  border: none;
   border-radius: 12px;
-}
-
-.page-nav {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid #bfe5c8;
-  background: #ffffff;
-  color: #2e7d32;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.page-nav:hover:not(:disabled) {
-  background: #e8f5e9;
-}
-
-.page-nav:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-.list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.sort-select {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #c8e6c9;
-  font-size: 13px;
-  font-weight: 600;
-  color: #2e7d32;
-  background: #f8fdf9;
-  cursor: pointer;
-}
-
-.sort-select:focus {
-  outline: none;
-  border-color: #66bb6a;
-}
-
-.sale-header {
-  display: flex;
-  align-items: center;
-}
-
-.back-btn {
-  margin-left: auto;   /* ⭐ 이 한 줄이 핵심 */
-  background: transparent;
-  border: none;
-  font-size: 15px;
-  font-weight: 700;
-  color: #2e7d32;
-  cursor: pointer;
-  padding: 6px 8px;
-}
-
-.back-btn::before {
-  margin-right: 6px;
+.submit-btn:hover {
+  background: #1b5e20;
 }

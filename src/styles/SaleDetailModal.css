@@ -1,35 +1,47 @@
-/* 검은 반투명 배경 */
+/* =========================
+   검은 반투명 배경
+========================= */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 500;
 }
 
-/* 모달 박스 (영수증 스타일) */
+/* =========================
+   모달 박스 (영수증 스타일)
+========================= */
 .receipt-modal {
   width: 420px;
   background: #fffdfa;
   padding: 22px;
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   font-family: "Pretendard", sans-serif;
   animation: fadeIn 0.2s ease-out;
   border: 2px dashed #d4c7b0; /* 영수증 느낌 */
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 헤더 */
+/* =========================
+   헤더
+========================= */
 .receipt-header {
   text-align: center;
   margin-bottom: 10px;
@@ -46,19 +58,25 @@
   font-size: 14px;
 }
 
-/* info 섹션 */
+/* =========================
+   판매 정보
+========================= */
 .receipt-info p {
   margin: 6px 0;
   font-size: 15px;
 }
 
-/* 절취선 */
+/* =========================
+   절취선
+========================= */
 .receipt-divider {
   border-bottom: 2px dashed #bbb;
   margin: 14px 0;
 }
 
-/* 테이블 */
+/* =========================
+   테이블
+========================= */
 .receipt-table {
   width: 100%;
   border-collapse: collapse;
@@ -79,41 +97,9 @@
   font-size: 14px;
 }
 
-/* footer 버튼들 */
-.receipt-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.close-btn,
-.new-sale-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.close-btn {
-  background: #ccc;
-}
-
-.close-btn:hover {
-  background: #b6b6b6;
-}
-
-.new-sale-btn {
-  background: #66bb6a;
-  color: #fff;
-}
-
-.new-sale-btn:hover {
-  background: #66bb6a;
-}
-
-/* 총 합계 행 */
+/* =========================
+   총 합계 행
+========================= */
 .receipt-total-row td {
   font-weight: 700;
   border-top: 2px solid #ccc;
@@ -123,4 +109,56 @@
 
 .receipt-total-row td:last-child {
   color: #2e7d32;
+}
+
+/* =========================
+   하단 버튼 영역
+========================= */
+.receipt-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* 공통 버튼 스타일 */
+.close-btn,
+.new-sale-btn,
+.history-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+/* 닫기 버튼 */
+.close-btn {
+  background: #ccc;
+}
+
+.close-btn:hover {
+  background: #b6b6b6;
+}
+
+/* 새 판매 등록 버튼 */
+.new-sale-btn {
+  background: #66bb6a;
+  color: #fff;
+}
+
+.new-sale-btn:hover {
+  background: #57a95b;
+}
+
+/* =========================
+   ⭐ 판매 내역 보기 버튼 (추가)
+========================= */
+.history-btn {
+  background: #4caf50;
+  color: #fff;
+}
+
+.history-btn:hover {
+  background: #43a047;
 }

@@ -48,6 +48,30 @@
 }
 
 /* =========================
+   🔍 검색창 (추가)
+========================= */
+.inventory-search {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #cce3d0;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.inventory-search::placeholder {
+  color: #9aaa9f;
+}
+
+.inventory-search:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
+/* =========================
    메시지 박스
 ========================= */
 .message-box {
@@ -194,7 +218,7 @@ button {
 }
 
 /* =========================
-   오른쪽 패널
+   오른쪽 패널 (사용 중이면 유지)
 ========================= */
 .inventory-right {
   width: 320px;
@@ -216,7 +240,6 @@ button {
   color: #1f7a3d;
 }
 
-/* 패널 아이템 */
 .panel-item {
   display: flex;
   justify-content: space-between;
@@ -229,7 +252,6 @@ button {
   color: #c62828;
 }
 
-/* 패널 버튼 */
 .panel-btn {
   width: 100%;
   margin-top: 18px;
@@ -242,16 +264,4 @@ button {
 
 .panel-btn:hover {
   background: #ffcdd2;
-}
-
-.page-btn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: #f1f3f4;
-  font-weight: 700;
-}
-
-.page-btn.active {
-  background: #2e7d32;
-  color: #ffffff;
 }

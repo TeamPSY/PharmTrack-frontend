@@ -11,6 +11,9 @@ export default function SaleCreate() {
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
 
+  /* 🔍 검색 */
+  const [searchText, setSearchText] = useState("");
+
   /* 페이지네이션 */
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,16 +26,15 @@ export default function SaleCreate() {
     const sorted = [...list];
 
     switch (sortType) {
-      case "name": // 가나다순
+      case "name":
         sorted.sort((a, b) => a.name.localeCompare(b.name));
         break;
-      case "price": // 가격순
+      case "price":
         sorted.sort((a, b) => a.price - b.price);
         break;
-      default: // 번호순
+      default:
         sorted.sort((a, b) => a.medicineId - b.medicineId);
     }
-
     return sorted;
   };
 
@@ -50,13 +52,18 @@ export default function SaleCreate() {
     load();
   }, []);
 
-  /* 정렬/목록 변경 시 페이지 초기화 */
+  /* 정렬/검색 변경 시 페이지 초기화 */
   useEffect(() => {
     setCurrentPage(1);
-  }, [sortType, medicines.length]);
+  }, [sortType, medicines.length, searchText]);
 
-  /* 정렬 + 페이지네이션 적용 */
-  const sortedMedicines = handleSort(medicines);
+  /* 🔍 검색 → 정렬 */
+  const filteredMedicines = medicines.filter((m) =>
+    m.name.includes(searchText)
+  );
+  const sortedMedicines = handleSort(filteredMedicines);
+
+  /* 페이지네이션 */
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentMedicines = sortedMedicines.slice(
     startIndex,
@@ -77,7 +84,6 @@ export default function SaleCreate() {
         alert("재고 수량을 초과할 수 없습니다.");
         return;
       }
-
       setCart((prev) =>
         prev.map((item) =>
           item.medicineId === medicine.medicineId
@@ -123,16 +129,25 @@ export default function SaleCreate() {
   return (
     <div className="sale-create-container">
       <div className="sale-header">
-      <h2 className="sale-title">🛒 판매 등록</h2>
-      <button className="back-btn" onClick={() => navigate(-1)}>
+        <h2 className="sale-title">🛒 판매 등록</h2>
+        <button className="back-btn" onClick={() => navigate(-1)}>
           back
-      </button>
+        </button>
       </div>
+
       <div className="sale-flex-box">
-        {/* 왼쪽: 약품 목록 */}
+        {/* 왼쪽 */}
         <div className="left-box">
           <div className="list-header">
             <h3 className="section-title">약품 목록</h3>
+
+            {/* 🔍 검색 input */}
+            <input
+              className="sale-search-input"
+              placeholder="약품명 검색"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
 
             <select
               className="sort-select"
@@ -145,8 +160,8 @@ export default function SaleCreate() {
             </select>
           </div>
 
-          {medicines.length === 0 ? (
-            <p className="empty-text">약품 데이터가 없습니다.</p>
+          {currentMedicines.length === 0 ? (
+            <p className="empty-text">검색 결과가 없습니다.</p>
           ) : (
             <>
               <table className="medicine-table">
@@ -184,22 +199,6 @@ export default function SaleCreate() {
 
               {/* 페이지네이션 */}
               <div className="pagination">
-                <button
-                  className="page-nav"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(1)}
-                >
-                  ≪
-                </button>
-
-                <button
-                  className="page-nav"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                >
-                  ＜
-                </button>
-
                 {Array.from({ length: totalPages }).map((_, i) => (
                   <button
                     key={i}
@@ -211,28 +210,12 @@ export default function SaleCreate() {
                     {i + 1}
                   </button>
                 ))}
-
-                <button
-                  className="page-nav"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                >
-                  ＞
-                </button>
-
-                <button
-                  className="page-nav"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(totalPages)}
-                >
-                  ≫
-                </button>
               </div>
             </>
           )}
         </div>
 
-        {/* 오른쪽: 선택 상품 */}
+        {/* 오른쪽 */}
         <div className="right-box">
           <h3 className="section-title">선택 상품</h3>
 
@@ -240,13 +223,6 @@ export default function SaleCreate() {
             <p className="empty-text">선택된 상품이 없습니다.</p>
           ) : (
             <table className="cart-table">
-              <thead>
-                <tr>
-                  <th>약품명</th>
-                  <th>수량</th>
-                  <th>금액</th>
-                </tr>
-              </thead>
               <tbody>
                 {cart.map((item) => (
                   <tr key={item.medicineId}>
@@ -266,7 +242,6 @@ export default function SaleCreate() {
               <span>총 금액</span>
               <strong>{totalPrice.toLocaleString()}원</strong>
             </div>
-
             <button className="submit-btn" onClick={submitSale}>
               판매 등록
             </button>
