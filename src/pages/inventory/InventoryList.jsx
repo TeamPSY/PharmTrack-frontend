@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMedicineList, updateMedicine } from "../../api/medicineApi";
-import "../../styles/MedicineInventory.css";
+import "../../styles/InventoryList.css";
 import { useExpiringCount } from "../../hooks/useNotification";
 import HistoryModal from "./HistoryModal";
 

@@ -92,7 +92,7 @@ export default function UserUpdate() {
       )}
 
       <div style={{ marginBottom: "10px" }}>
-        <label>아이디 (username)</label>
+        <label>아이디</label>
         <input
           type="text"
           name="username"

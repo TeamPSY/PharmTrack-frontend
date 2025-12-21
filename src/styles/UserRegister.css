@@ -52,9 +52,9 @@
 
 /* 입력창 */
 .register-input {
-  padding: 11px 14px;
-  font-size: 15px;
-  border-radius: 9px;
+  padding: 8px 10px;      /* ⭐ 높이 줄이기 */
+  font-size: 14px;        /* ⭐ 글자 살짝 작게 */
+  border-radius: 8px;     /* ⭐ 둥글기 살짝 감소 */
   border: 1.6px solid #bfe5c8;
   transition: 0.2s;
 }

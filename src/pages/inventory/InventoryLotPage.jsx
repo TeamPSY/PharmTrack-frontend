@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getLots, addLot } from "../../api/lotApi"; // ✅ 실제 함수명
-import "../../styles/MedicineInventory.css";
+import "../../styles/InventoryList.css";
 
 export default function InventoryLotPage() {
   const { medicineId } = useParams();
