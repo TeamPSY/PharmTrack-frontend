@@ -20,8 +20,8 @@ export default function InventoryList() {
   const [selectedMedicineId, setSelectedMedicineId] = useState(null);
 
   const navigate = useNavigate();
-  const { expiringCount, loading } = useExpiringCount();
 
+  /* 데이터 로드 */
   useEffect(() => {
     load();
   }, []);
@@ -32,38 +32,35 @@ export default function InventoryList() {
       const data = res.data || [];
       setList(data);
       setSortedList(data);
-    } catch (err) {
+    } catch {
       setMessage("데이터 로드 실패");
       setTimeout(() => setMessage(null), 2000);
     }
   };
-  
 
-  /* 정렬 적용 */
+  /* 정렬 */
   useEffect(() => {
     let sorted = [...list];
 
     switch (sortType) {
-       case "name":
-      sorted.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-
-      case "stockAsc": // ✅ 재고 부족순 (오름차순)
+      case "name":
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "stockAsc":
         sorted.sort((a, b) => a.stock - b.stock);
         break;
-
-      case "stockDesc": // ✅ 재고 많은순 (내림차순)
+      case "stockDesc":
         sorted.sort((a, b) => b.stock - a.stock);
         break;
-
-    default: // "number"
-      sorted.sort((a, b) => a.medicineId - b.medicineId);
+      default:
+        sorted.sort((a, b) => a.medicineId - b.medicineId);
     }
 
     setSortedList(sorted);
     setCurrentPage(1);
   }, [sortType, list]);
 
+  /* 재고 수정 */
   const changeStock = (id, value) => {
     const num = Number(value);
     setSortedList((prev) =>
@@ -94,198 +91,227 @@ export default function InventoryList() {
     Math.ceil(sortedList.length / itemsPerPage)
   );
 
+
+  const normalizeDate = (dateStr) => {
+    const d = new Date(dateStr);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+
   return (
-    <div className="inventory-container">
-      <div className="inventory-layout">
+  <div className="inventory-container">
+    <div className="inventory-layout">
 
-        {/* 왼쪽 : 재고 테이블 */}
-        <div className="inventory-left">
-          <div className="inventory-card">
+      {/* ================= 왼쪽 : 재고 테이블 ================= */}
+      <div className="inventory-left">
+        <div className="inventory-card">
 
-            {/* 헤더 */}
-            <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: "16px",
-  }}
->
-  <div>
-    <h2 className="title-green">재고 관리</h2>
-    <p
-      style={{
-        fontSize: "13px",
-        color: "#6b6b6b",
-        marginTop: "4px",
-      }}
-    >
-      총 {sortedList.length}건
-    </p>
-  </div>
+          {/* 헤더 */}
+          <div className="inventory-header">
+            <div>
+              <h2 className="title-green">재고 관리</h2>
+              <p className="sub-text">총 {sortedList.length}건</p>
+            </div>
 
-  <select
-    value={sortType}
-    onChange={(e) => setSortType(e.target.value)}
-  >
-    <option value="ID">ID 번호순</option>
-    <option value="stockAsc">재고 부족순</option>
-  <option value="stockDesc">재고 많은순</option>
-  <option value="name">가나다순</option>
-  
-  </select>
-</div>
+            <select
+              value={sortType}
+              onChange={(e) => setSortType(e.target.value)}
+            >
+              <option value="number">ID 번호순</option>
+              <option value="stockAsc">재고 부족순</option>
+              <option value="stockDesc">재고 많은순</option>
+              <option value="name">가나다순</option>
+            </select>
+          </div>
 
+          {message && <div className="message-box">{message}</div>}
 
-            {message && <div className="message-box">{message}</div>}
-
-            {/* 테이블 */}
-            <table className="inventory-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>약품명</th>
-                  <th>재고</th>
-                  <th>입고/출고</th>
-                  <th>직접 입력</th>
-                  <th>저장하기</th>
-                  <th>LOT 관리</th>
-                  <th>이력 보기</th>
+          {/* 테이블 */}
+          <table className="inventory-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>약품명</th>
+                <th>재고</th>
+                <th>입고/출고</th>
+                <th>직접 입력</th>
+                <th>저장</th>
+                <th>LOT</th>
+                <th>이력</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((m) => (
+                <tr key={m.medicineId}>
+                  <td>{m.medicineId}</td>
+                  <td>{m.name}</td>
+                  <td>{m.stock}</td>
+                  <td>
+                    <button
+                      className="btn-icon btn-sell"
+                      onClick={() =>
+                        changeStock(m.medicineId, m.stock + 1)
+                      }
+                    >
+                      +1
+                    </button>
+                    <button
+                      className="btn-icon btn-delete"
+                      onClick={() =>
+                        changeStock(m.medicineId, m.stock - 1)
+                      }
+                    >
+                      -1
+                    </button>
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      value={m.stock}
+                      className="stock-input"
+                      onChange={(e) =>
+                        changeStock(m.medicineId, e.target.value)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <button
+                      className="btn-green"
+                      onClick={() => saveStock(m)}
+                    >
+                      저장
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn-gray"
+                      onClick={() =>
+                        navigate(`/inventory/${m.medicineId}/lots`)
+                      }
+                    >
+                      LOT
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn-history"
+                      onClick={() => {
+                        setSelectedMedicineId(m.medicineId);
+                        setShowHistory(true);
+                      }}
+                    >
+                      이력
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((m) => (
-                  <tr key={m.medicineId}>
-                    <td>{m.medicineId}</td>
-                    <td>{m.name}</td>
-                    <td>{m.stock}</td>
-                    <td>
-                      <button
-                        className="btn-icon btn-sell"
-                        onClick={() =>
-                          changeStock(m.medicineId, m.stock + 1)
-                        }
-                      >
-                        +1
-                      </button>
-                      <button
-                        className="btn-icon btn-delete"
-                        onClick={() =>
-                          changeStock(m.medicineId, m.stock - 1)
-                        }
-                      >
-                        -1
-                      </button>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={m.stock}
-                        onChange={(e) =>
-                          changeStock(m.medicineId, e.target.value)
-                        }
-                        className="stock-input"
-                      />
-                    </td>
-                    <td>
-                      <button
-                        className="btn-green"
-                        onClick={() => saveStock(m)}
-                      >
-                        저장
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn-gray"
-                        onClick={() =>
-                          navigate(`/inventory/${m.medicineId}/lots`)
-                        }
-                      >
-                        LOT
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn-history"
-                        onClick={() => {
-                          setSelectedMedicineId(m.medicineId);
-                          setShowHistory(true);
-                        }}
-                      >
-                        이력
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+            </tbody>
+          </table>
 
-            {/* 페이지네이션 */}
-<div className="pagination">
-  {/* 맨 처음 */}
-  <button
-    className="page-btn"
-    disabled={currentPage === 1}
-    onClick={() => setCurrentPage(1)}
-  >
-    {"<<"}
-  </button>
+          {/* 페이지네이션 */}
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(1)}
+            >
+              {"<<"}
+            </button>
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+            >
+              {"<"}
+            </button>
 
-  {/* 이전 */}
-  <button
-    className="page-btn"
-    disabled={currentPage === 1}
-    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-  >
-    {"<"}
-  </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (num) => (
+                <button
+                  key={num}
+                  className={currentPage === num ? "active" : ""}
+                  onClick={() => setCurrentPage(num)}
+                >
+                  {num}
+                </button>
+              )
+            )}
 
-  {/* 페이지 번호 */}
-  {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-    <button
-      key={num}
-      className={`page-btn ${currentPage === num ? "active" : ""}`}
-      onClick={() => setCurrentPage(num)}
-    >
-      {num}
-    </button>
-  ))}
-
-  {/* 다음 */}
-  <button
-    className="page-btn"
-    disabled={currentPage === totalPages}
-    onClick={() =>
-      setCurrentPage((p) => Math.min(totalPages, p + 1))
-    }
-  >
-    {">"}
-  </button>
-
-  {/* 맨 끝 */}
-  <button
-    className="page-btn"
-    disabled={currentPage === totalPages}
-    onClick={() => setCurrentPage(totalPages)}
-  >
-    {">>"}
-  </button>
-</div>
-
-
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            >
+              {">"}
+            </button>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(totalPages)}
+            >
+              {">>"}
+            </button>
           </div>
         </div>
-
       </div>
 
-      {/* 이력 모달 */}
-      {showHistory && (
-        <HistoryModal
-          medicineId={selectedMedicineId}
-          onClose={() => setShowHistory(false)}
-        />
-      )}
+      {/* ================= 오른쪽 : 사이드 패널 ================= */}
+      <div className="inventory-right">
+
+        {/* 재고 부족 */}
+        <div className="side-panel warning">
+          <h3>재고 부족 약품</h3>
+
+          <ul>
+            {sortedList
+              .filter((m) => m.stock <= 10)
+              .slice(0, 5)
+              .map((m) => (
+                <li key={m.medicineId}>
+                  <span>💊 {m.name}</span>
+                  <strong>{m.stock}개</strong>
+                </li>
+              ))}
+          </ul>
+        </div>
+
+        {/* 유통기한 임박 (항상 리스트) */}
+        <div className="side-panel expire">
+  <h3>유통기한 임박</h3>
+
+  <ul>
+    {sortedList
+      .filter((m) => m.expireDate) // expireDate 있는 약품만
+      .map((m) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const expire = normalizeDate(m.expireDate);
+
+        const daysLeft = Math.ceil(
+          (expire - today) / (1000 * 60 * 60 * 24)
+        );
+
+        return { ...m, daysLeft };
+      })
+      .sort((a, b) => a.daysLeft - b.daysLeft)
+      .slice(0, 5)
+      .map((m) => (
+        <li key={m.medicineId}>
+          <span>⏰ 💊 {m.name}</span>
+          <strong>D-{m.daysLeft}</strong>
+        </li>
+      ))}
+  </ul>
+</div>
+
+
+      </div>
     </div>
-  );
+
+    {/* 이력 모달 */}
+    {showHistory && (
+      <HistoryModal
+        medicineId={selectedMedicineId}
+        onClose={() => setShowHistory(false)}
+      />
+    )}
+  </div>
+);
 }

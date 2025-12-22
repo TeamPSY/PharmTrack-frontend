@@ -48,6 +48,30 @@
 }
 
 /* =========================
+   🔍 검색창 (추가)
+========================= */
+.inventory-search {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #cce3d0;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.inventory-search::placeholder {
+  color: #9aaa9f;
+}
+
+.inventory-search:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
+/* =========================
    메시지 박스
 ========================= */
 .message-box {
@@ -194,7 +218,7 @@ button {
 }
 
 /* =========================
-   오른쪽 패널
+   오른쪽 패널 (사용 중이면 유지)
 ========================= */
 .inventory-right {
   width: 320px;
@@ -216,7 +240,6 @@ button {
   color: #1f7a3d;
 }
 
-/* 패널 아이템 */
 .panel-item {
   display: flex;
   justify-content: space-between;
@@ -229,7 +252,6 @@ button {
   color: #c62828;
 }
 
-/* 패널 버튼 */
 .panel-btn {
   width: 100%;
   margin-top: 18px;
@@ -244,14 +266,142 @@ button {
   background: #ffcdd2;
 }
 
-.page-btn {
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: #f1f3f4;
-  font-weight: 700;
+/* =========================
+   전체 레이아웃
+========================= */
+.inventory-layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
 }
 
-.page-btn.active {
-  background: #2e7d32;
-  color: #ffffff;
+/* =========================
+   왼쪽 테이블 영역
+========================= */
+.inventory-left {
+  flex: 1;                  /* ⭐ 메인 영역 */
+}
+
+/* =========================
+   오른쪽 사이드 패널
+========================= */
+.inventory-right {
+  width: 320px;             /* ⭐ 고정 폭 */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =========================
+   공통 사이드 패널
+========================= */
+.side-panel {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.side-panel h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+/* =========================
+   재고 부족 패널
+========================= */
+.side-panel.warning {
+  border-left: 6px solid #d32f2f;
+  background: #fffafa;
+}
+
+.side-panel.warning h3 {
+  color: #b71c1c;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.side-panel.warning h3::before {
+  content: "🚨";
+}
+
+.side-panel.warning ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-panel.warning li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  font-size: 14px;
+  border-bottom: 1px dashed #f0cfcf;
+}
+
+.side-panel.warning li:last-child {
+  border-bottom: none;
+}
+
+.side-panel.warning li span {
+  font-weight: 600;
+  color: #333;
+}
+
+.side-panel.warning li strong {
+  color: #c62828;
+  font-weight: 800;
+}
+
+/* =========================
+   유통기한 임박 패널
+========================= */
+.side-panel.expire {
+  border-left: 6px solid #ff9800;   /* 🟠 주황 */
+  background: #fffdf7;
+}
+
+.side-panel.expire h3 {
+  color: #ef6c00;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.side-panel.expire h3::before {
+  content: "⏰";
+}
+
+/* 리스트 */
+.side-panel.expire ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-panel.expire li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  font-size: 14px;
+  border-bottom: 1px dashed #ffe0b2;
+}
+
+.side-panel.expire li:last-child {
+  border-bottom: none;
+}
+
+/* 약품명 */
+.side-panel.expire li span {
+  font-weight: 600;
+  color: #333;
+}
+
+/* D-n */
+.side-panel.expire li strong {
+  font-weight: 800;
+  color: #ef6c00;
 }

@@ -17,8 +17,8 @@ export default function SaleDetail() {
   return (
     <div className="modal-backdrop" onClick={() => navigate(-1)}>
       <div className="receipt-modal" onClick={(e) => e.stopPropagation()}>
-        
-        {/* 영수증 헤더 */}
+
+        {/* 헤더 */}
         <div className="receipt-header">
           <h2>PHARM TRACK RECEIPT</h2>
           <p>판매 상세 정보</p>
@@ -33,7 +33,7 @@ export default function SaleDetail() {
 
         <div className="receipt-divider" />
 
-        {/* 판매 상품 리스트 */}
+        {/* 상품 리스트 */}
         <table className="receipt-table">
           <thead>
             <tr>
@@ -53,7 +53,6 @@ export default function SaleDetail() {
               </tr>
             ))}
 
-            {/* 총 합계 */}
             <tr className="receipt-total-row">
               <td colSpan="3">총 합계</td>
               <td>{sale.totalPrice.toLocaleString()}원</td>
@@ -66,11 +65,20 @@ export default function SaleDetail() {
           <button className="close-btn" onClick={() => navigate(-1)}>
             닫기
           </button>
+
           <button
             className="new-sale-btn"
             onClick={() => navigate("/sale/create")}
           >
-            새 판매 등록
+            판매 등록
+          </button>
+
+          {/* ⭐ 추가된 버튼 */}
+          <button
+            className="history-btn"
+            onClick={() => navigate("/sale/list")}
+          >
+            판매 내역 조회
           </button>
         </div>
 
