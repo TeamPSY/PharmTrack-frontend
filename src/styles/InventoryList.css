@@ -48,30 +48,6 @@
 }
 
 /* =========================
-   🔍 검색창 (추가)
-========================= */
-.inventory-search {
-  width: 100%;
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  border-radius: 12px;
-  border: 1px solid #cce3d0;
-  font-size: 14px;
-  font-weight: 600;
-  box-sizing: border-box;
-}
-
-.inventory-search::placeholder {
-  color: #9aaa9f;
-}
-
-.inventory-search:focus {
-  outline: none;
-  border-color: #4caf50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
-}
-
-/* =========================
    메시지 박스
 ========================= */
 .message-box {
@@ -404,4 +380,26 @@ button {
 .side-panel.expire li strong {
   font-weight: 800;
   color: #ef6c00;
+}
+
+.inventory-search {
+  width: 45%;
+  padding: 15px 20px;
+  margin-bottom: 16px;
+  margin-left: 40px;
+  border-radius: 12px;
+  border: 1px solid #cce3d0;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.inventory-search::placeholder {
+  color: #9aaa9f;
+}
+
+.inventory-search:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
 }
