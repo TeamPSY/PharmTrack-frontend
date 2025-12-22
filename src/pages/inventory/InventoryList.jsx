@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMedicineList, updateMedicine } from "../../api/medicineApi";
 import "../../styles/InventoryList.css";
-import { useExpiringCount } from "../../hooks/useNotification";
+//import { useExpiringCount } from "../../hooks/useNotification";
 import HistoryModal from "./HistoryModal";
 
 export default function InventoryList() {
@@ -82,7 +82,7 @@ export default function InventoryList() {
     }
   };
 
-  /* 페이지네이션 */
+   /* 페이지네이션 */
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentItems = sortedList.slice(indexOfFirst, indexOfLast);
@@ -211,12 +211,14 @@ export default function InventoryList() {
           {/* 페이지네이션 */}
           <div className="pagination">
             <button
+            className="page-btn"
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(1)}
             >
               {"<<"}
             </button>
             <button
+            className="page-btn"
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((p) => p - 1)}
             >
@@ -227,7 +229,7 @@ export default function InventoryList() {
               (num) => (
                 <button
                   key={num}
-                  className={currentPage === num ? "active" : ""}
+                  className={`page-btn ${currentPage === num ? "active" : ""}`}
                   onClick={() => setCurrentPage(num)}
                 >
                   {num}
@@ -236,12 +238,14 @@ export default function InventoryList() {
             )}
 
             <button
+            className="page-btn"
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage((p) => p + 1)}
             >
               {">"}
             </button>
             <button
+            className="page-btn"
               disabled={currentPage === totalPages}
               onClick={() => setCurrentPage(totalPages)}
             >
@@ -258,10 +262,10 @@ export default function InventoryList() {
         <div className="side-panel warning">
           <h3>재고 부족 약품</h3>
 
-          <ul>
+          <ul style={{ maxHeight: '185px', overflowY: 'auto', paddingRight: '5px' }}>
             {sortedList
               .filter((m) => m.stock <= 10)
-              .slice(0, 5)
+              .slice(0, 20)
               .map((m) => (
                 <li key={m.medicineId}>
                   <span>💊 {m.name}</span>
@@ -271,31 +275,37 @@ export default function InventoryList() {
           </ul>
         </div>
 
-        {/* 유통기한 임박 (항상 리스트) */}
-        <div className="side-panel expire">
-  <h3>유통기한 임박</h3>
-
-  <ul>
+{/* 유통기한 임박 및 만료 알림 */}
+<div className="side-panel expire">
+  <h3>유통기한 알림</h3>
+  <ul style={{ maxHeight: '185px', overflowY: 'auto', paddingRight: '5px' }}>
     {sortedList
-      .filter((m) => m.expireDate) // expireDate 있는 약품만
+      .filter((m) => m.expirationDate)
       .map((m) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
-        const expire = normalizeDate(m.expireDate);
-
-        const daysLeft = Math.ceil(
-          (expire - today) / (1000 * 60 * 60 * 24)
-        );
-
+        const expire = normalizeDate(m.expirationDate);
+        const daysLeft = Math.ceil((expire - today) / (1000 * 60 * 60 * 24));
         return { ...m, daysLeft };
       })
+      // ⭐ 수정: 10일 이하인 것 + 이미 지난 것(음수) 모두 포함
+      .filter(m => m.daysLeft <= 10) 
       .sort((a, b) => a.daysLeft - b.daysLeft)
-      .slice(0, 5)
+      .slice(0, 20)
       .map((m) => (
-        <li key={m.medicineId}>
-          <span>⏰ 💊 {m.name}</span>
-          <strong>D-{m.daysLeft}</strong>
+        <li key={m.medicineId} className={m.daysLeft < 0 ? "expired-item" : ""}>
+          <span>
+            {m.daysLeft < 0 ? "⚠️" : "⏰"} 💊 {m.name}
+          </span>
+          {m.daysLeft < 0 ? (
+            // ⭐ 유통기한이 지났을 때 문구
+            <strong style={{ color: 'red', fontSize: '0.8rem' }}>
+              만료(폐기 필요)
+            </strong>
+          ) : (
+            // 유통기한 임박 시 문구
+            <strong>D-{m.daysLeft}</strong>
+          )}
         </li>
       ))}
   </ul>
